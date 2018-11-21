@@ -33,11 +33,14 @@ libheaders.files =                                                  \
     $$libsmp_includedir/model/prefixnode.h \
     $$libsmp_includedir/model/modelinterface.h \
     $$libsmp_includedir/model/modelmain.h \
-    $$libsmp_includedir/controller/controllerinterface.h
+    $$libsmp_includedir/controller/controllerinterface.h \
+    $$libsmp_includedir/controller/controllermain.h \
+    $$libsmp_includedir/model/modeldata.h \
+    $$libsmp_includedir/model/observer.h
+
 
 # Заголовочные файлы
 HEADERS  += $${libheaders.files} \
-    ../../include/libsmp/controller/controllermain.h
 
 
 
@@ -46,4 +49,4 @@ SOURCES += \
     model/prefixtree.cpp \
     model/prefixnode.cpp \
     model/modelmain.cpp \
-    ../../include/libsmp/controller/controllermain.cpp
+    controller/controllermain.cpp

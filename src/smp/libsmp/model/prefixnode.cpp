@@ -1,16 +1,12 @@
-#include "prefixnode.h"
+#include <model/modeldata.h>
+
+#include <model/prefixnode.h>
 
 namespace libsmp {
 
-PrefixNode::PrefixNode()
-{
+PrefixNode::PrefixNode() {}
 
-}
-
-PrefixNode::~PrefixNode()
-{
-
-}
+PrefixNode::~PrefixNode() {}
 
 char PrefixNode::key() const {
     return key_;
@@ -76,6 +72,19 @@ void PrefixNode::setDescription(const QString &description) {
 
 QString PrefixNode::getDescription() const {
     return description_;
+}
+
+Object PrefixNode::toObject() const {
+    Object object;
+    object.current_node.key = fullKey();
+    object.current_node.name = getName();
+
+    for (auto &child : childNodes_) {
+        Node node;
+        node.key = child->fullKey();
+        node.name = dynamic_cast<PrefixNode *>(child.get())->getName();
+    }
+    return object;
 }
 
 }

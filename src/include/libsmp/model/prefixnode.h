@@ -4,6 +4,8 @@
 
 namespace libsmp {
 
+struct Object;
+
 class PrefixNode final : public NodeInterface,
         public std::enable_shared_from_this<PrefixNode> {
 public:
@@ -29,6 +31,8 @@ public:
 
     void setDescription(const QString &description);
     QString getDescription() const;
+
+    Object toObject() const;
 
 private:
     char key_ = 0x00;

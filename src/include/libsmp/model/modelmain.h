@@ -1,12 +1,18 @@
 #pragma once
 
 #include <memory>
+#include <list>
+
+#include <global.h>
 
 #include <libsmp/model/modelinterface.h>
 
 namespace libsmp {
 
 class PrefixTree;
+class Observer;
+
+struct Object;
 
 class ModelMain final : public ModelInterface {
 public:
@@ -18,9 +24,15 @@ public:
     void setDescriptionForObject(const std::string &key, const QString &description) override final;
     void requestObject(const std::string &key) override final;
 
-private:
-    std::unique_ptr<PrefixTree> tree_;
+    void addObserver(sp<Observer> observer);
 
+private:
+    void updateObject(const Object &object);
+    void updateDescription(const QString &description);
+
+    std::unique_ptr<PrefixTree> tree_;
+    using Observers = std::list<sp<Observer>>;
+    Observers observers_;
 };
 
 }
