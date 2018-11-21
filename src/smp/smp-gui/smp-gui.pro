@@ -37,3 +37,6 @@ HEADERS  += \
 SOURCES += \
     mainwindow.cpp\
     main.cpp
+
+FORMS += \
+    mainwindow.ui

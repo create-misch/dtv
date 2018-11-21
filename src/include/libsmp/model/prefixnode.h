@@ -1,6 +1,6 @@
 #pragma once
 
-#include <libsmp/nodeinterface.h>
+#include <model/nodeinterface.h>
 
 namespace libsmp {
 

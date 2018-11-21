@@ -1,6 +1,6 @@
-#include <libsmp/prefixnode.h>
+#include <model/prefixnode.h>
 
-#include <libsmp/prefixtree.h>
+#include <model/prefixtree.h>
 
 namespace libsmp {
 
@@ -16,7 +16,7 @@ bool PrefixTree::addEmptyChildForNode(const string &key){
         return true;
     }
 
-    auto node = getNodeWIthKey(key);
+    auto node = getNodeWithKey(key);
 
     if (node == nullptr)
         return false;
@@ -26,7 +26,7 @@ bool PrefixTree::addEmptyChildForNode(const string &key){
     return true;
 }
 
-sp<NodeInterface> PrefixTree::getNodeWIthKey(const string &key) {
+sp<NodeInterface> PrefixTree::getNodeWithKey(const string &key) {
     sp<NodeInterface> currentNode = node_root_;
     for (const auto &k : key) {
         if (currentNode->key() == k)

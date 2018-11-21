@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include <libsmp/global.h>
+#include <global.h>
 
 namespace libsmp {
 
@@ -14,7 +14,7 @@ public:
 
     bool addEmptyChildForNode(const std::string &key);
 
-    sp<NodeInterface> getNodeWIthKey(const std::string &key);
+    sp<NodeInterface> getNodeWithKey(const std::string &key);
 
 private:
     char keyForNode();

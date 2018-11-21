@@ -65,6 +65,7 @@ top_includedir=$$top_srcdir/include
 macx {
 INCLUDEPATH += /usr/local/include
 INCLUDEPATH += $$top_includedir
+INCLUDEPATH += $$top_includedir/libsmp
 LIBS += -L/usr/local/lib
 }
 
