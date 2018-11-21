@@ -1,6 +1,9 @@
 #include "mainwindow.h"
 #include <QApplication>
 
+#include <libsmp/prefixtree.h>
+#include <libsmp/prefixnode.h>
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
