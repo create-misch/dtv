@@ -12,7 +12,7 @@ PrefixTree::~PrefixTree() {}
 
 bool PrefixTree::addEmptyChildForNode(const string &key){
     if (key.empty() || key.at(0) == 0x00) {
-        node_root_ = make_shared<PrefixNode>(keyForNode());
+        node_root_ = new PrefixNode(keyForNode());
         return true;
     }
 
@@ -21,13 +21,13 @@ bool PrefixTree::addEmptyChildForNode(const string &key){
     if (node == nullptr)
         return false;
 
-    node->addChild(make_shared<PrefixNode>(keyForNode()));
+    node->addChild(new PrefixNode(keyForNode()));
 
     return true;
 }
 
-sp<NodeInterface> PrefixTree::getNodeWithKey(const string &key) {
-    sp<NodeInterface> currentNode = node_root_;
+NodeInterface *PrefixTree::getNodeWithKey(const string &key) {
+    NodeInterface* currentNode = node_root_;
     for (const auto &k : key) {
         if (currentNode->key() == k)
             continue;
@@ -40,7 +40,7 @@ sp<NodeInterface> PrefixTree::getNodeWithKey(const string &key) {
         }
 
         if (currentNode->key() != k)
-            return sp<NodeInterface>();
+            return nullptr;
     }
     return currentNode;
 }

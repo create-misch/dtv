@@ -21,19 +21,23 @@
     <item>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <widget class="QTextBrowser" name="textBrowser"/>
+       <widget class="QTextBrowser" name="textBrowser">
+        <property name="readOnly">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_SaveDescription">
+        <property name="text">
+         <string>Save</string>
+        </property>
+       </widget>
       </item>
       <item>
        <widget class="QPushButton" name="pushButton_addChildren">
         <property name="text">
          <string>Add element</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pushButton_addDescription">
-        <property name="text">
-         <string>Add description</string>
         </property>
        </widget>
       </item>

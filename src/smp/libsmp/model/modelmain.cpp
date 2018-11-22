@@ -7,8 +7,8 @@
 
 namespace libsmp {
 
-sp<PrefixNode> toPrefixNode(sp<NodeInterface> &node) {
-    return std::dynamic_pointer_cast<PrefixNode>(node);
+PrefixNode* toPrefixNode(NodeInterface *node) {
+    return dynamic_cast<PrefixNode *>(node);
 }
 
 ModelMain::ModelMain() :
@@ -20,7 +20,8 @@ void ModelMain::addChildObject(const std::string &key) {
     tree_->addEmptyChildForNode(key);
 
     auto node = tree_->getNodeWithKey(key);
-    updateObject(toPrefixNode(node)->toObject());
+    if (node != nullptr)
+        updateObject(node);
 }
 
 void ModelMain::setNameForObject(const std::string &key, const QString &name) {
@@ -29,7 +30,7 @@ void ModelMain::setNameForObject(const std::string &key, const QString &name) {
     if (node == nullptr) return;
     auto prefixNode = toPrefixNode(node);
     prefixNode->setName(name);
-    updateObject(prefixNode->toObject());
+    updateObject(node);
 }
 
 void ModelMain::setDescriptionForObject(const std::string &key, const QString &description) {
@@ -39,6 +40,15 @@ void ModelMain::setDescriptionForObject(const std::string &key, const QString &d
 
     auto prefixNode = toPrefixNode(node);
     prefixNode->setDescription(description);
+    updateDescription(description);
+}
+
+void ModelMain::requestDescriptionForObject(const std::string &key) {
+    auto node = tree_->getNodeWithKey(key);
+
+    if (node == nullptr) return;
+
+    auto prefixNode = toPrefixNode(node);
     updateDescription(prefixNode->getDescription());
 }
 
@@ -46,22 +56,28 @@ void ModelMain::requestObject(const std::string &key) {
     auto node = tree_->getNodeWithKey(key);
 
     if (node == nullptr) return;
-    auto prefixNode = toPrefixNode(node);
-    updateObject(prefixNode->toObject());
+    updateObject(node);
 }
 
 void ModelMain::addObserver(sp<Observer> observer) {
     observers_.push_back(observer);
 }
 
-void ModelMain::updateObject(const Object &object) {
+void ModelMain::updateObject(const NodeInterface *node) {
+    auto root = tree_->getNodeWithKey("a");
+    if (root != nullptr) {
+        for (auto & observer : observers_) {
+            observer->updateRequestedObject(root);
+        }
+        return;
+    }
     for (auto & observer : observers_) {
-        observer->updateRequestedObject(object);
+        observer->updateRequestedObject(node);
     }
 }
 
 void ModelMain::updateDescription(const QString &description) {
-    for (auto & observer : observers_) {
+    for (auto &observer : observers_) {
         observer->updateDescription(description);
     }
 }

@@ -19,6 +19,10 @@ void ControllerMain::setDescriptionForObject(const std::string &key, const QStri
     model_->setDescriptionForObject(key, description);
 }
 
+void ControllerMain::requestDescriptionForObject(const std::string &key) {
+    model_->requestDescriptionForObject(key);
+}
+
 void ControllerMain::requestObject(const std::string &key) {
     model_->requestObject(key);
 }

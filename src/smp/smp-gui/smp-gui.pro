@@ -31,12 +31,16 @@ INCLUDEPATH += $$top_includedir
 
 # Заголовочные файлы
 HEADERS  += \
-    mainwindow.h
+    mainwindow.h \
+    treeitem.h \
+    treemodel.h
 
 # Исходники
 SOURCES += \
     mainwindow.cpp\
-    main.cpp
+    main.cpp \
+    treeitem.cpp \
+    treemodel.cpp
 
 FORMS += \
     mainwindow.ui

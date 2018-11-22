@@ -5,24 +5,26 @@
 
 #include <QByteArray>
 #include <QDataStream>
+#include <QList>
 
 #include <libsmp/global.h>
 
 namespace libsmp {
 
 class NodeInterface;
-using ChildNodes  = std::list<sp<NodeInterface>>;
+using ChildNodes  = QList<NodeInterface *>;
 
 class NodeInterface {
 public:
     virtual ~NodeInterface() {}
+    virtual  void setKey(char key) = 0;
     virtual char key() const = 0;
     virtual std::string fullKey() const = 0;
 
-    virtual void setParent(sp<NodeInterface> node) = 0;
-    virtual sp<NodeInterface> parent() const = 0;
+    virtual void setParent(NodeInterface *node) = 0;
+    virtual NodeInterface *parent() const = 0;
 
-    virtual void addChild(sp<NodeInterface> node) = 0;
+    virtual void addChild(NodeInterface *node) = 0;
     virtual ChildNodes childs() const = 0;
 
     virtual bool serialize(QByteArray &data) const = 0;

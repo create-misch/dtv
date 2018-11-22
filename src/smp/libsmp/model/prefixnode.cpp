@@ -6,7 +6,13 @@ namespace libsmp {
 
 PrefixNode::PrefixNode() {}
 
-PrefixNode::~PrefixNode() {}
+PrefixNode::~PrefixNode() {
+    qDeleteAll(childNodes_);
+}
+
+void PrefixNode::setKey(char key) {
+    key_ = key;
+}
 
 char PrefixNode::key() const {
     return key_;
@@ -14,23 +20,23 @@ char PrefixNode::key() const {
 
 std::string PrefixNode::fullKey() const {
     if (parent() == nullptr) {
-        return std::string(&key_);
+        return std::string(&key_, 1);
     }
     auto key = parent()->fullKey();
     key.push_back(key_);
     return key;
 }
 
-void PrefixNode::setParent(sp<NodeInterface> node) {
+void PrefixNode::setParent(NodeInterface *node) {
     parent_ = node;
 }
 
-sp<NodeInterface> PrefixNode::parent() const {
+NodeInterface* PrefixNode::parent() const {
     return parent_;
 }
 
-void PrefixNode::addChild(sp<NodeInterface> node) {
-    node->setParent(shared_from_this());
+void PrefixNode::addChild(NodeInterface *node) {
+    node->setParent(this);
     childNodes_.push_back(node);
 }
 
@@ -74,17 +80,5 @@ QString PrefixNode::getDescription() const {
     return description_;
 }
 
-Object PrefixNode::toObject() const {
-    Object object;
-    object.current_node.key = fullKey();
-    object.current_node.name = getName();
-
-    for (auto &child : childNodes_) {
-        Node node;
-        node.key = child->fullKey();
-        node.name = dynamic_cast<PrefixNode *>(child.get())->getName();
-    }
-    return object;
-}
 
 }

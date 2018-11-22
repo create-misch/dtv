@@ -1,14 +1,16 @@
 #pragma once
 
-#include <model/modeldata.h>
+#include <global.h>
 
 namespace libsmp {
+
+class NodeInterface;
 
 class Observer {
 public:
     virtual ~Observer() {}
 
-    virtual void updateRequestedObject(const Object &object) = 0;
+    virtual void updateRequestedObject(const NodeInterface *node) = 0;
     virtual void updateDescription(const QString &description) = 0;
 
 };

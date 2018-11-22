@@ -14,11 +14,11 @@ public:
 
     bool addEmptyChildForNode(const std::string &key);
 
-    sp<NodeInterface> getNodeWithKey(const std::string &key);
+    NodeInterface* getNodeWithKey(const std::string &key);
 
 private:
     char keyForNode();
-    sp<NodeInterface> node_root_;
+    NodeInterface *node_root_;
     char key_value = 0x61;// 'a'
 
 };

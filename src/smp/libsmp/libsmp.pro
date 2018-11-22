@@ -34,15 +34,12 @@ libheaders.files =                                                  \
     $$libsmp_includedir/model/modelinterface.h \
     $$libsmp_includedir/model/modelmain.h \
     $$libsmp_includedir/controller/controllerinterface.h \
-    $$libsmp_includedir/controller/controllermain.h \
-    $$libsmp_includedir/model/modeldata.h \
+    $$libsmp_includedir/controller/controllermain.h \    
     $$libsmp_includedir/model/observer.h
 
 
 # Заголовочные файлы
 HEADERS  += $${libheaders.files} \
-
-
 
 # Исходники
 SOURCES += \

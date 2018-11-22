@@ -10,9 +10,11 @@ class MainWindow;
 }
 
 namespace libsmp {
-struct Object;
+class NodeInterface;
 class ControllerInterface;
 }
+
+class TreeModel;
 
 class MainWindow : public QMainWindow, public libsmp::Observer {
     Q_OBJECT
@@ -21,10 +23,15 @@ public:
     ~MainWindow();
 
     void updateDescription(const QString &description) override final;
-    void updateRequestedObject(const libsmp::Object &object) override final;
+    void updateRequestedObject(const libsmp::NodeInterface *node) override final;
+
+private slots:
+    void on_pushButton_addChildren_clicked();
+    void on_pushButton_SaveDescription_clicked();
 
 private:
     libsmp::sp<libsmp::ControllerInterface> controller_;
+    libsmp::sp<TreeModel> model_;
     Ui::MainWindow *ui;
 
 

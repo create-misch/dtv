@@ -1,16 +1,28 @@
+#include <QInputDialog>
+
 #include <controller/controllerinterface.h>
+
+#include "treeitem.h"
+#include "treemodel.h"
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-MainWindow::MainWindow(libsmp::sp<libsmp::ControllerInterface> controller, QWidget *parent) :
+using namespace libsmp;
+
+MainWindow::MainWindow(sp<ControllerInterface> controller, QWidget *parent) :
     QMainWindow(parent),
     controller_(controller),
+    model_(std::make_shared<TreeModel>(controller)),
     ui(new Ui::MainWindow) {
     ui->setupUi(this);
+    ui->treeView->setModel(model_.get());
 
-    controller_->addChildObject(std::string());
-    controller_->setDescriptionForObject(std::string(),"fdsfsd asdf asdf asdfasdf asdf ");
+    connect(ui->treeView, &QTreeView::clicked, this,
+            [this] (const QModelIndex &index) {
+        TreeItem *item = static_cast<TreeItem*>(index.internalPointer());
+        controller_->requestDescriptionForObject(item->fullKey());
+    });
 }
 
 MainWindow::~MainWindow() {
@@ -21,6 +33,21 @@ void MainWindow::updateDescription(const QString &description) {
     ui->textBrowser->setText(description);
 }
 
-void MainWindow::updateRequestedObject(const libsmp::Object &object) {
-    Q_UNUSED(object)
+void MainWindow::updateRequestedObject(const NodeInterface *node) {
+    auto treeItem = new TreeItem(*dynamic_cast<const PrefixNode *>(node));
+    model_->setRootItem(treeItem);
+}
+
+void MainWindow::on_pushButton_addChildren_clicked(){
+    TreeItem* treeItem = static_cast<TreeItem *>
+            (ui->treeView->currentIndex().internalPointer());
+//    if (treeItem == nullptr) return;
+    controller_->addChildObject(treeItem->fullKey());
+}
+
+void MainWindow::on_pushButton_SaveDescription_clicked() {
+    auto text = ui->textBrowser->toPlainText();
+    TreeItem* treeItem = static_cast<TreeItem *>
+            (ui->treeView->currentIndex().internalPointer());
+    controller_->setDescriptionForObject(treeItem->fullKey(), text);
 }

@@ -4,23 +4,21 @@
 
 namespace libsmp {
 
-struct Object;
-
-class PrefixNode final : public NodeInterface,
-        public std::enable_shared_from_this<PrefixNode> {
+class PrefixNode : public NodeInterface {
 public:
     PrefixNode();
     PrefixNode(char key) :
         key_(key) {}
-    ~PrefixNode();
+    virtual ~PrefixNode();
 
+    void setKey(char key) override final;
     char key() const override final;
     std::string fullKey() const override final;
 
-    void setParent(sp<NodeInterface> node) override final;
-    sp<NodeInterface> parent() const override final;
+    void setParent(NodeInterface *node) override final;
+    NodeInterface * parent() const override final;
 
-    void addChild(sp<NodeInterface> node) override final;
+    void addChild(NodeInterface *node) override final;
     ChildNodes childs() const override final;
 
     bool serialize(QByteArray &data) const override final;
@@ -32,13 +30,11 @@ public:
     void setDescription(const QString &description);
     QString getDescription() const;
 
-    Object toObject() const;
-
 private:
     char key_ = 0x00;
     QString name_;
     QString description_;
-    sp<NodeInterface> parent_ = nullptr;
+    NodeInterface * parent_ = nullptr;
     ChildNodes childNodes_;
 };
 
