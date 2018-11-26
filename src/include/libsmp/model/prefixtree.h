@@ -18,7 +18,7 @@ public:
 
 private:
     char keyForNode();
-    NodeInterface *node_root_;
+    NodeInterface *node_root_ = nullptr;
     char key_value = 0x61;// 'a'
 
 };

@@ -62,7 +62,7 @@ isEmpty(debug_dest_dir) {
     top_destdir=$$debug_dest_dir
 }
 top_includedir=$$top_srcdir/include
-macx {
+!win32 {
 INCLUDEPATH += /usr/local/include
 INCLUDEPATH += $$top_includedir
 INCLUDEPATH += $$top_includedir/libsmp

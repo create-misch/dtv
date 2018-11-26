@@ -31,4 +31,24 @@ public:
     virtual bool desirialize(const QByteArray &data) = 0;
 };
 
+inline NodeInterface* nodeWithKey(NodeInterface *root, const std::string key) {
+    if (!root) return nullptr;
+    NodeInterface* currentNode = root;
+    for (const auto &k : key) {
+        if (currentNode->key() == k)
+            continue;
+
+        for (auto &node : currentNode->childs()) {
+            if (node->key() == k) {
+                currentNode = node;
+                break;
+            }
+        }
+
+        if (currentNode->key() != k)
+            return nullptr;
+    }
+    return currentNode;
+}
+
 }

@@ -1,5 +1,3 @@
-#include <model/modeldata.h>
-
 #include <model/prefixnode.h>
 
 namespace libsmp {

@@ -32,7 +32,7 @@ public:
     void setRootItem(TreeItem *item);
 
 private:
-    TreeItem* rootItem;
+    TreeItem* rootItem = nullptr;
     libsmp::sp<libsmp::ControllerInterface> controller_;
 };
 

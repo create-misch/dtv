@@ -27,22 +27,7 @@ bool PrefixTree::addEmptyChildForNode(const string &key){
 }
 
 NodeInterface *PrefixTree::getNodeWithKey(const string &key) {
-    NodeInterface* currentNode = node_root_;
-    for (const auto &k : key) {
-        if (currentNode->key() == k)
-            continue;
-
-        for (auto &node : currentNode->childs()) {
-            if (node->key() == k) {
-                currentNode = node;
-                break;
-            }
-        }
-
-        if (currentNode->key() != k)
-            return nullptr;
-    }
-    return currentNode;
+    return nodeWithKey(node_root_, key);
 }
 
 char PrefixTree::keyForNode() {

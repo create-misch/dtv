@@ -32,8 +32,8 @@ public:
 
 private:
     char key_ = 0x00;
-    QString name_;
-    QString description_;
+    QString name_ = "New Object";
+    QString description_ = "Description";
     NodeInterface * parent_ = nullptr;
     ChildNodes childNodes_;
 };
