@@ -36,12 +36,13 @@ void MainWindow::updateDescription(const QString &description) {
 void MainWindow::updateRequestedObject(const NodeInterface *node) {
     auto treeItem = new TreeItem(*dynamic_cast<const PrefixNode *>(node));
     model_->setRootItem(treeItem);
+//    delete treeItem;
 }
 
 void MainWindow::on_pushButton_addChildren_clicked(){
     TreeItem* treeItem = static_cast<TreeItem *>
             (ui->treeView->currentIndex().internalPointer());
-//    if (treeItem == nullptr) return;
+    if (treeItem == nullptr) return;
     controller_->addChildObject(treeItem->fullKey());
 }
 
@@ -50,4 +51,5 @@ void MainWindow::on_pushButton_SaveDescription_clicked() {
     TreeItem* treeItem = static_cast<TreeItem *>
             (ui->treeView->currentIndex().internalPointer());
     controller_->setDescriptionForObject(treeItem->fullKey(), text);
+    delete treeItem;
 }

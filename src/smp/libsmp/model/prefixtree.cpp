@@ -10,7 +10,7 @@ PrefixTree::PrefixTree() {}
 
 PrefixTree::~PrefixTree() {}
 
-bool PrefixTree::addEmptyChildForNode(const string &key){
+bool PrefixTree::addEmptyChildForNode(const string &key) {
     if (key.empty() || key.at(0) == 0x00) {
         node_root_ = new PrefixNode(keyForNode());
         return true;

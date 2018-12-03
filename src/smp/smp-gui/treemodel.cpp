@@ -31,8 +31,18 @@ int TreeModel::columnCount(const QModelIndex &parent) const {
 
 void TreeModel::setRootItem(TreeItem* item) {
     beginResetModel();
-    if (rootItem) delete rootItem;
-    rootItem = item;
+    auto node = dynamic_cast<PrefixNode *>(nodeWithKey(rootItem, item->fullKey()));
+    if (node != nullptr && node->parent() != nullptr) {
+//        auto parent = node->parent();
+////        item->setParent(node->parent());
+////        delete node;
+////        node = nullptr;
+//        *node = TreeItem(*item, parent);
+        replaceNode(rootItem, item);
+    } else {
+        delete rootItem;
+        rootItem = item;
+    }
     endResetModel();
 }
 

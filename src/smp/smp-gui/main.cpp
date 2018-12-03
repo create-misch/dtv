@@ -25,13 +25,13 @@ int main(int argc, char *argv[])
     controller->setDescriptionForObject(std::string("ab"),"lol1 ");
     controller->setNameForObject(std::string("ab"),"lol1");
 
-    controller->addChildObject(std::string("a"));
-    controller->setDescriptionForObject(std::string("ac"),"lol2");
-    controller->setNameForObject(std::string("ac"),"lol2");
+//    controller->addChildObject(std::string("a"));
+//    controller->setDescriptionForObject(std::string("ac"),"lol2");
+//    controller->setNameForObject(std::string("ac"),"lol2");
 
-    controller->addChildObject(std::string("ab"));
-    controller->setDescriptionForObject(std::string("abd"),"lol3");
-    controller->setNameForObject(std::string("abd"),"lol3");
+//    controller->addChildObject(std::string("ab"));
+//    controller->setDescriptionForObject(std::string("abd"),"lol3");
+//    controller->setNameForObject(std::string("abd"),"lol3");
 #endif
     window->show();
 

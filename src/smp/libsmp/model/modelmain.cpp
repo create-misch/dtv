@@ -64,13 +64,13 @@ void ModelMain::addObserver(sp<Observer> observer) {
 }
 
 void ModelMain::updateObject(const NodeInterface *node) {
-    auto root = tree_->getNodeWithKey("a");
-    if (root != nullptr) {
-        for (auto & observer : observers_) {
-            observer->updateRequestedObject(root);
-        }
-        return;
-    }
+//    auto root = tree_->getNodeWithKey("a");
+//    if (root != nullptr) {
+//        for (auto & observer : observers_) {
+//            observer->updateRequestedObject(root);
+//        }
+//        return;
+//    }
     for (auto & observer : observers_) {
         observer->updateRequestedObject(node);
     }

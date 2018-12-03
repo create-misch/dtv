@@ -8,7 +8,7 @@
 class TreeItem : public libsmp::PrefixNode {
 public:
     explicit TreeItem(const PrefixNode &node, libsmp::NodeInterface * parentItem = nullptr);
-    ~TreeItem();
+    virtual ~TreeItem();
 
     libsmp::NodeInterface * child(int row);
     int childCount() const;
