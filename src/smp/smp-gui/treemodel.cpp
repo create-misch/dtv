@@ -31,24 +31,21 @@ int TreeModel::columnCount(const QModelIndex &parent) const {
 
 void TreeModel::setRootItem(const NodeInterface *item) {
     auto node = dynamic_cast<PrefixNode *>(nodeWithKey(rootItem, item->fullKey()));
+    beginResetModel();
     if (node != nullptr && node->parent() != nullptr) {
-//        auto parent = node->parent();
-////        item->setParent(node->parent());
-////        delete node;
-////        node = nullptr;
-//        *node = TreeItem(*item, parent);
         auto treeItem = new TreeItem(*dynamic_cast<const PrefixNode *>(item));
         auto row = treeItem->row();
-        beginInsertRows(index(treeItem->row(), 1).parent(), row, treeItem->row() + 1);
+        Q_UNUSED(row)
+//        beginInsertRows(index(treeItem->row(), 1).parent(), row, treeItem->row() + 1);
         replaceNode(rootItem, treeItem, item->fullKey());
-        endInsertRows();
+//        endInsertRows();
     } else {
-        beginResetModel();
+
         delete rootItem;
         rootItem = new TreeItem(*dynamic_cast<const PrefixNode *>(item));
-        endResetModel();
-    }
 
+    }
+            endResetModel();
 }
 
 QVariant TreeModel::data(const QModelIndex &index, int role) const {

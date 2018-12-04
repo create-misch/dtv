@@ -11,6 +11,10 @@
 
 using namespace libsmp;
 
+TreeItem *indexToItem(QModelIndex &&index) {
+    return static_cast<TreeItem*>(index.internalPointer());
+}
+
 MainWindow::MainWindow(sp<ControllerInterface> controller, QWidget *parent) :
     QMainWindow(parent),
     controller_(controller),
@@ -40,16 +44,14 @@ void MainWindow::updateRequestedObject(const libsmp::NodeInterface *node) {
 }
 
 void MainWindow::on_pushButton_addChildren_clicked(){
-    TreeItem* treeItem = static_cast<TreeItem *>
-            (ui->treeView->currentIndex().internalPointer());
+    TreeItem* treeItem = indexToItem(ui->treeView->currentIndex());
     if (treeItem == nullptr) return;
     controller_->addChildObject(treeItem->fullKey());
 }
 
 void MainWindow::on_pushButton_SaveDescription_clicked() {
     auto text = ui->textBrowser->toPlainText();
-    TreeItem* treeItem = static_cast<TreeItem *>
-            (ui->treeView->currentIndex().internalPointer());
-    controller_->setDescriptionForObject(treeItem->fullKey(), text);
-    delete treeItem;
+    TreeItem* treeItem = indexToItem(ui->treeView->currentIndex());
+    if (!treeItem) return;
+    controller_->setDescriptionForObject(treeItem->fullKey(), text);    
 }
