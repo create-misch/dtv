@@ -2,6 +2,7 @@
 
 #include <controller/controllerinterface.h>
 
+#include <model/nodeinterface.h>
 #include "treeitem.h"
 #include "treemodel.h"
 
@@ -33,9 +34,8 @@ void MainWindow::updateDescription(const QString &description) {
     ui->textBrowser->setText(description);
 }
 
-void MainWindow::updateRequestedObject(const NodeInterface *node) {
-    auto treeItem = new TreeItem(*dynamic_cast<const PrefixNode *>(node));
-    model_->setRootItem(treeItem);
+void MainWindow::updateRequestedObject(const libsmp::NodeInterface *node) {
+    model_->setRootItem(node);
 //    delete treeItem;
 }
 

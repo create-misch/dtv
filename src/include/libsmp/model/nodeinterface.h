@@ -26,6 +26,7 @@ public:
 
     virtual void addChild(NodeInterface *node) = 0;
     virtual ChildNodes childs() const = 0;
+    virtual ChildNodes &childs() = 0;
 
     virtual bool serialize(QByteArray &data) const = 0;
     virtual bool desirialize(const QByteArray &data) = 0;
@@ -51,10 +52,10 @@ inline NodeInterface* nodeWithKey(NodeInterface *root, const std::string &key) {
     return currentNode;
 }
 
-inline bool replaceNode(NodeInterface *root, NodeInterface *nodeReplace) {
-    auto searchNode = nodeWithKey(root, nodeReplace->fullKey());
+inline bool replaceNode(NodeInterface *root, NodeInterface *nodeReplace, const std::string &key) {
+    auto searchNode = nodeWithKey(root, key);
     nodeReplace->setParent(searchNode->parent());
-    auto childs = searchNode->parent()->childs();
+    auto &childs = searchNode->parent()->childs();
     auto idNodeForReplace = childs.indexOf(searchNode);
 
     delete childs[idNodeForReplace];

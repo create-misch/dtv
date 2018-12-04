@@ -20,6 +20,7 @@ public:
 
     void addChild(NodeInterface *node) override final;
     ChildNodes childs() const override final;
+    ChildNodes &childs() override final;
 
     bool serialize(QByteArray &data) const override final;
     bool desirialize(const QByteArray &data) override final;

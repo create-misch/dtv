@@ -42,6 +42,10 @@ ChildNodes PrefixNode::childs() const {
     return childNodes_;
 }
 
+ChildNodes &PrefixNode::childs() {
+    return childNodes_;
+}
+
 bool PrefixNode::serialize(QByteArray &data) const {
     QDataStream stream(&data, QIODevice::WriteOnly);
 
