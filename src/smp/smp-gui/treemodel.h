@@ -8,7 +8,7 @@
 
 namespace libsmp {
 class ControllerInterface;
-class NodeInterface;
+class PrefixNode;
 }
 
 class TreeItem;
@@ -30,7 +30,7 @@ public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     int columnCount(const QModelIndex &parent = QModelIndex()) const override;
 
-    void setRootItem(const libsmp::NodeInterface *item);
+    void setItem(const libsmp::PrefixNode *item);
 
 private:
     TreeItem* rootItem = nullptr;

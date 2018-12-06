@@ -5,6 +5,7 @@
 #include "treeitem.h"
 #include "treemodel.h"
 
+class TreeItem;
 
 using namespace libsmp;
 
@@ -29,23 +30,21 @@ int TreeModel::columnCount(const QModelIndex &parent) const {
         return rootItem->columnCount();
 }
 
-void TreeModel::setRootItem(const NodeInterface *item) {
-    auto node = dynamic_cast<PrefixNode *>(nodeWithKey(rootItem, item->fullKey()));
-    beginResetModel();
+void TreeModel::setItem(const PrefixNode *item) {
+    auto node = toTreeItem(nodeWithKey(rootItem, item->fullKey()));
     if (node != nullptr && node->parent() != nullptr) {
-        auto treeItem = new TreeItem(*dynamic_cast<const PrefixNode *>(item));
-        auto row = treeItem->row();
-        Q_UNUSED(row)
-//        beginInsertRows(index(treeItem->row(), 1).parent(), row, treeItem->row() + 1);
+        auto treeItem = new TreeItem(*item);
+        auto row = node->row();
+        auto nodeIndex = createIndex(row, 1, node);
+        beginInsertRows(nodeIndex.parent(), row , row);
         replaceNode(rootItem, treeItem, item->fullKey());
-//        endInsertRows();
+        endInsertRows();
     } else {
-
+        beginResetModel();
         delete rootItem;
         rootItem = new TreeItem(*dynamic_cast<const PrefixNode *>(item));
-
+        endResetModel();
     }
-            endResetModel();
 }
 
 QVariant TreeModel::data(const QModelIndex &index, int role) const {
@@ -91,7 +90,7 @@ const {
     if (!hasIndex(row, column, parent))
         return QModelIndex();
 
-    TreeItem *parentItem;
+    TreeItem *parentItem = nullptr;
 
     if (!parent.isValid())
         parentItem = rootItem;

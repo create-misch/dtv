@@ -26,8 +26,8 @@ bool PrefixTree::addEmptyChildForNode(const string &key) {
     return true;
 }
 
-NodeInterface *PrefixTree::getNodeWithKey(const string &key) {
-    return nodeWithKey(node_root_, key);
+PrefixNode *PrefixTree::getNodeWithKey(const string &key) {
+    return dynamic_cast<PrefixNode *>(nodeWithKey(node_root_, key));
 }
 
 char PrefixTree::keyForNode() {

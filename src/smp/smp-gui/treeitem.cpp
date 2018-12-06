@@ -38,16 +38,13 @@ QVariant TreeItem::data(int column) const {
 }
 
 int TreeItem::row() const {
-    auto row(0);
     if (parent()) {
-        auto childs = parent()->childs();//.indexOf(const_cast<TreeItem*>(this));
+        auto childs = parent()->childs();
         for (int i = 0; i < childs.size(); i++) {
             if (fullKey() == childs.at(i)->fullKey()) {
-                row = i;
                 return i;
             }
         }
-        return row;
     }
 
     return 0;

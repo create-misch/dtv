@@ -10,7 +10,6 @@ class MainWindow;
 }
 
 namespace libsmp {
-class NodeInterface;
 class ControllerInterface;
 }
 
@@ -23,7 +22,7 @@ public:
     ~MainWindow();
 
     void updateDescription(const QString &description) override final;
-    void updateRequestedObject(const libsmp::NodeInterface *node) override final;
+    void updateRequestedObject(const libsmp::Node *node) override final;
 
 private slots:
     void on_pushButton_addChildren_clicked();

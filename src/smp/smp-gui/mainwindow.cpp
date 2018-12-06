@@ -38,9 +38,8 @@ void MainWindow::updateDescription(const QString &description) {
     ui->textBrowser->setText(description);
 }
 
-void MainWindow::updateRequestedObject(const libsmp::NodeInterface *node) {
-    model_->setRootItem(node);
-//    delete treeItem;
+void MainWindow::updateRequestedObject(const Node *node) {
+    model_->setItem(node);
 }
 
 void MainWindow::on_pushButton_addChildren_clicked(){

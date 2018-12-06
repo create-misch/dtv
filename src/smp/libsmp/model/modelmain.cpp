@@ -27,9 +27,8 @@ void ModelMain::addChildObject(const std::string &key) {
 void ModelMain::setNameForObject(const std::string &key, const QString &name) {
     auto node = tree_->getNodeWithKey(key);
 
-    if (node == nullptr) return;
-    auto prefixNode = toPrefixNode(node);
-    prefixNode->setName(name);
+    if (node == nullptr) return;    
+    node->setName(name);
     updateObject(node);
 }
 
@@ -38,8 +37,7 @@ void ModelMain::setDescriptionForObject(const std::string &key, const QString &d
 
     if (node == nullptr) return;
 
-    auto prefixNode = toPrefixNode(node);
-    prefixNode->setDescription(description);
+    node->setDescription(description);
     updateDescription(description);
 }
 
@@ -48,8 +46,7 @@ void ModelMain::requestDescriptionForObject(const std::string &key) {
 
     if (node == nullptr) return;
 
-    auto prefixNode = toPrefixNode(node);
-    updateDescription(prefixNode->getDescription());
+    updateDescription(node->getDescription());
 }
 
 void ModelMain::requestObject(const std::string &key) {
@@ -63,14 +60,7 @@ void ModelMain::addObserver(sp<Observer> observer) {
     observers_.push_back(observer);
 }
 
-void ModelMain::updateObject(const NodeInterface *node) {
-//    auto root = tree_->getNodeWithKey("a");
-//    if (root != nullptr) {
-//        for (auto & observer : observers_) {
-//            observer->updateRequestedObject(root);
-//        }
-//        return;
-//    }
+void ModelMain::updateObject(const PrefixNode *node) {
     for (auto & observer : observers_) {
         observer->updateRequestedObject(node);
     }

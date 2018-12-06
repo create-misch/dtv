@@ -6,6 +6,7 @@
 namespace libsmp {
 
 class NodeInterface;
+class PrefixNode;
 
 class PrefixTree {
 public:
@@ -14,7 +15,7 @@ public:
 
     bool addEmptyChildForNode(const std::string &key);
 
-    NodeInterface* getNodeWithKey(const std::string &key);
+    PrefixNode* getNodeWithKey(const std::string &key);
 
 private:
     char keyForNode();

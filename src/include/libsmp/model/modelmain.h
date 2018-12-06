@@ -11,7 +11,7 @@ namespace libsmp {
 
 class PrefixTree;
 class Observer;
-class NodeInterface;
+class PrefixNode;
 
 class ModelMain final : public ModelInterface {
 public:
@@ -27,7 +27,7 @@ public:
     void addObserver(sp<Observer> observer);
 
 private:
-    void updateObject(const libsmp::NodeInterface *node);
+    void updateObject(const libsmp::PrefixNode *node);
     void updateDescription(const QString &description);
 
     std::unique_ptr<PrefixTree> tree_;
