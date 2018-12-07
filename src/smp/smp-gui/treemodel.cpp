@@ -34,11 +34,17 @@ void TreeModel::setItem(const PrefixNode *item) {
     auto node = toTreeItem(nodeWithKey(rootItem, item->fullKey()));
     if (node != nullptr && node->parent() != nullptr) {
         auto treeItem = new TreeItem(*item);
-        auto row = node->row();
-        auto nodeIndex = createIndex(row, 1, node);
-        beginInsertRows(nodeIndex.parent(), row , row);
-        replaceNode(rootItem, treeItem, item->fullKey());
-        endInsertRows();
+        if (node->getName() != treeItem->getName()) {
+            node->setName(treeItem->getName());
+            return;
+        }
+        if (node->childCount() != treeItem->childCount()) {
+            auto row = node->row();
+            auto nodeIndex = createIndex(row, 0, node);
+            beginInsertRows(nodeIndex, node->childCount(), node->childCount());
+            node->addChild(new TreeItem(*static_cast<PrefixNode *>(item->childs().last())));
+            endInsertRows();
+        }
     } else {
         beginResetModel();
         delete rootItem;
