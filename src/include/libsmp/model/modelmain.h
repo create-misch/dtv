@@ -24,14 +24,14 @@ public:
     void requestDescriptionForObject(const std::string &key) override final;
     void requestObject(const std::string &key) override final;
 
-    void addObserver(sp<Observer> observer);
+    void addObserver(Observer* observer);
 
 private:
     void updateObject(const libsmp::PrefixNode *node);
     void updateDescription(const QString &description);
 
     std::unique_ptr<PrefixTree> tree_;
-    using Observers = std::list<sp<Observer>>;
+    using Observers = std::list<Observer *>;
     Observers observers_;
 };
 

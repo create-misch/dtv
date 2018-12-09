@@ -49,3 +49,11 @@ int TreeItem::row() const {
 
     return 0;
 }
+
+void TreeItem::fromPrefixNode(const PrefixNode *node) {
+    if (getName() != node->getName())
+        setName(node->getName());
+
+    if (getDescription() != node->getDescription())
+        setDescription(node->getDescription());
+}

@@ -33,14 +33,9 @@ int TreeModel::columnCount(const QModelIndex &parent) const {
 void TreeModel::setItem(const PrefixNode *item) {
     auto node = toTreeItem(nodeWithKey(rootItem, item->fullKey()));
     if (node != nullptr && node->parent() != nullptr) {
-        auto treeItem = new TreeItem(*item);
-        if (node->getName() != treeItem->getName()) {
-            node->setName(treeItem->getName());
-            return;
-        }
-        if (node->childCount() != treeItem->childCount()) {
-            auto row = node->row();
-            auto nodeIndex = createIndex(row, 0, node);
+        node->fromPrefixNode(item);
+        if (node->childCount() != item->childs().size()) {
+            auto nodeIndex = createIndex(node->row(), 0, node);
             beginInsertRows(nodeIndex, node->childCount(), node->childCount());
             node->addChild(new TreeItem(*static_cast<PrefixNode *>(item->childs().last())));
             endInsertRows();
@@ -48,7 +43,7 @@ void TreeModel::setItem(const PrefixNode *item) {
     } else {
         beginResetModel();
         delete rootItem;
-        rootItem = new TreeItem(*dynamic_cast<const PrefixNode *>(item));
+        rootItem = new TreeItem(*item);
         endResetModel();
     }
 }
@@ -85,6 +80,9 @@ Qt::ItemFlags TreeModel::flags(const QModelIndex &index) const {
 
 QVariant TreeModel::headerData(int section, Qt::Orientation orientation,
                                int role) const {
+    if (!rootItem)
+        return QVariant();
+
     if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
         return rootItem->data(section);
 

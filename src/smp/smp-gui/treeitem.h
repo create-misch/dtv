@@ -15,4 +15,6 @@ public:
     int columnCount() const;
     QVariant data(int column) const;
     int row() const;
+
+    void fromPrefixNode(const PrefixNode *node);
 };

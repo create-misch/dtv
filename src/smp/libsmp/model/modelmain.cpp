@@ -56,7 +56,7 @@ void ModelMain::requestObject(const std::string &key) {
     updateObject(node);
 }
 
-void ModelMain::addObserver(sp<Observer> observer) {
+void ModelMain::addObserver(Observer *observer) {
     observers_.push_back(observer);
 }
 

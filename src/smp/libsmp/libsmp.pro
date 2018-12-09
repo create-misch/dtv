@@ -40,6 +40,7 @@ libheaders.files =                                                  \
 
 # Заголовочные файлы
 HEADERS  += $${libheaders.files} \
+    ../../include/libsmp/controller/factorycontroller.h
 
 # Исходники
 SOURCES += \
@@ -47,3 +48,5 @@ SOURCES += \
     model/prefixnode.cpp \
     model/modelmain.cpp \
     controller/controllermain.cpp
+
+DISTFILES +=
