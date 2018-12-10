@@ -5,7 +5,7 @@
 #include <global.h>
 
 #include <model/observer.h>
-#include <model/modelmain.h>
+#include <model/datastoragemain.h>
 
 #include <controller/controllermain.h>
 

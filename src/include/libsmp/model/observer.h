@@ -4,9 +4,9 @@
 
 namespace libsmp {
 
-class PrefixNode;
+class Node;
 
-using Node = PrefixNode;
+using Node = Node;
 
 class Observer {
 public:

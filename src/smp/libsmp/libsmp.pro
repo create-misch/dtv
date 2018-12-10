@@ -31,22 +31,26 @@ libheaders.files =                                                  \
     $$libsmp_includedir/model/nodeinterface.h \
     $$libsmp_includedir/model/prefixtree.h \
     $$libsmp_includedir/model/prefixnode.h \
-    $$libsmp_includedir/model/modelinterface.h \
-    $$libsmp_includedir/model/modelmain.h \
+    $$libsmp_includedir/model/datastorageinterface.h \
+    $$libsmp_includedir/model/datastoragemain.h \
+    $$libsmp_includedir/model/observer.h \
+    $$libsmp_includedir/model/node.h \
+    $$libsmp_includedir/model/nodetree.h \
+    $$libsmp_includedir/model/data.h \
     $$libsmp_includedir/controller/controllerinterface.h \
     $$libsmp_includedir/controller/controllermain.h \    
-    $$libsmp_includedir/model/observer.h
+    $$libsmp_includedir/controller/factorycontroller.h \
+
 
 
 # Заголовочные файлы
 HEADERS  += $${libheaders.files} \
-    ../../include/libsmp/controller/factorycontroller.h
 
 # Исходники
 SOURCES += \
-    model/prefixtree.cpp \
-    model/prefixnode.cpp \
-    model/modelmain.cpp \
-    controller/controllermain.cpp
+    controller/controllermain.cpp \
+    model/node.cpp \
+    model/nodetree.cpp \
+    model/datastoragemain.cpp
 
 DISTFILES +=

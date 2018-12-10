@@ -17,9 +17,8 @@ using ChildNodes  = QList<NodeInterface *>;
 class NodeInterface {
 public:
     virtual ~NodeInterface() {}
-    virtual  void setKey(char key) = 0;
-    virtual char key() const = 0;
-    virtual std::string fullKey() const = 0;
+    virtual  void setKey(const Key &key) = 0;
+    virtual Key key() const = 0;
 
     virtual void setParent(NodeInterface *node) = 0;
     virtual NodeInterface *parent() const = 0;
@@ -32,36 +31,29 @@ public:
     virtual bool desirialize(const QByteArray &data) = 0;
 };
 
-inline NodeInterface* nodeWithKey(NodeInterface *root, const std::string &key) {
-    if (!root) return nullptr;
-    NodeInterface* currentNode = root;
-    for (const auto &k : key) {
-        if (currentNode->key() == k)
-            continue;
+inline NodeInterface* nodeWithKey(const NodeInterface *root, const Key &key) {
+    NodeInterface *findNode = nullptr;
 
-        for (auto node : currentNode->childs()) {
-            if (node->key() == k) {
-                currentNode = node;
-                break;
-            }
-        }
+    if (!root) return findNode;
+    if (root->childs().size() == 0) return findNode;
 
-        if (currentNode->key() != k)
-            return nullptr;
+    for (const auto &node : root->childs()) {
+        if (node->key() == key)
+            return node;
     }
-    return currentNode;
+    return findNode;
 }
 
-inline bool replaceNode(NodeInterface *root, NodeInterface *nodeReplace, const std::string &key) {
-    auto searchNode = nodeWithKey(root, key);
-    nodeReplace->setParent(searchNode->parent());
-    auto &childs = searchNode->parent()->childs();
-    auto idNodeForReplace = childs.indexOf(searchNode);
+//inline bool replaceNode(NodeInterface *root, NodeInterface *nodeReplace, const std::string &key) {
+//    auto searchNode = nodeWithKey(root, key);
+//    nodeReplace->setParent(searchNode->parent());
+//    auto &childs = searchNode->parent()->childs();
+//    auto idNodeForReplace = childs.indexOf(searchNode);
 
-    delete childs[idNodeForReplace];
-    childs[idNodeForReplace] = nodeReplace;
+//    delete childs[idNodeForReplace];
+//    childs[idNodeForReplace] = nodeReplace;
 
-    return true;
-}
+//    return true;
+//}
 
 }
