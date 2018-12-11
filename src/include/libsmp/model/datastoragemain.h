@@ -15,6 +15,9 @@ namespace libsmp {
 class NodeTree;
 class Observer;
 class Node;
+class HardStorageInterface;
+
+using DataMap = std::unordered_map<Key, Data>;
 
 class DataStorageMain final : public DataStorageInterface {
 public:
@@ -33,10 +36,10 @@ private:
     void updateObject(const libsmp::Node *node);
     void updateData(const Data &data);
 
-    using DataMap = std::unordered_map<Key, Data>;
     using Observers = std::list<Observer *>;
 
     std::unique_ptr<NodeTree> tree_;
+    std::unique_ptr<HardStorageInterface> hardStorage_;
     DataMap data_map_;
     Observers observers_;
 };

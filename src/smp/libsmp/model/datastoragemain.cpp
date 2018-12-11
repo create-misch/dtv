@@ -2,14 +2,17 @@
 #include <model/nodetree.h>
 
 #include <model/observer.h>
+#include <model/hardstoragedb.h>
 
 #include <model/datastoragemain.h>
 
 namespace libsmp {
 
-
 DataStorageMain::DataStorageMain() :
-    tree_(new NodeTree) {}
+    tree_(new NodeTree),
+    hardStorage_(new HardStorageDB) {
+    hardStorage_->saveStorageToFile("./datab", data_map_, tree_.get());
+}
 
 DataStorageMain::~DataStorageMain() {}
 
