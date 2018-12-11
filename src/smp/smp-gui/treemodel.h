@@ -8,10 +8,18 @@
 
 namespace libsmp {
 class ControllerInterface;
-class PrefixNode;
+class Node;
 }
 
 class TreeItem;
+
+inline TreeItem *toTreeItem(void *data) {
+    return static_cast<TreeItem *>(data);
+}
+
+inline TreeItem *toTreeItem(const QModelIndex &index) {
+    return static_cast<TreeItem *>(index.internalPointer());
+}
 
 class TreeModel : public QAbstractItemModel {
     Q_OBJECT
@@ -30,7 +38,9 @@ public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     int columnCount(const QModelIndex &parent = QModelIndex()) const override;
 
-    void setItem(const libsmp::PrefixNode *item);
+    void setItem(const libsmp::Node &item, const QModelIndex &currentIndex);
+
+    TreeItem *getRootItem();
 
 private:
     TreeItem* rootItem = nullptr;

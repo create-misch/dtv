@@ -24,14 +24,14 @@ public:
     void addChildObject(const Key &key) override final;
     void setNameForObject(const Key &key, const QString &name) override final;
     void setDescriptionForObject(const Key &key, const QString &description) override final;
-    void requestDescriptionForObject(const Key &key) override final;
+    void requestDataForObject(const Key &key) override final;
     void requestObject(const Key &key) override final;
 
     void addObserver(Observer* observer);
 
 private:
     void updateObject(const libsmp::Node *node);
-    void updateDescription(const QString &description);
+    void updateData(const Data &data);
 
     using DataMap = std::unordered_map<Key, Data>;
     using Observers = std::list<Observer *>;

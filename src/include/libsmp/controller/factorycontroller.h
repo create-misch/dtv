@@ -14,11 +14,11 @@ namespace libsmp {
 class FactoryController {
 public:
     static sp<ControllerInterface> createController(Observer* observer, const QString nameProject) {
-        auto model = std::make_shared<ModelMain>();
+        auto model = std::make_shared<DataStorageMain>();
         auto controller = std::make_shared<ControllerMain>(model);
 
-        controller->addChildObject(std::string());
-        controller->setNameForObject(std::string("a"), nameProject);
+        controller->addChildObject(0);
+        controller->setNameForObject(0, nameProject);
 
         model->addObserver(observer);
 

@@ -4,17 +4,14 @@
 
 using namespace libsmp;
 
-TreeItem::TreeItem(const PrefixNode &node, NodeInterface *parent) :
-    PrefixNode() {
-    setParent(parent);
-
+TreeItem::TreeItem(const Node &node, NodeInterface *parent) :
+    Node() {
+    setParent(parent);    
     setKey(node.key());
-    setName(node.getName());
-    setDescription(node.getDescription());
 
     for (auto child : node.childs()) {
-        auto prefixNode = dynamic_cast<PrefixNode *>(child);
-        addChild(new TreeItem(*prefixNode, this));
+        auto node = dynamic_cast<Node *>(child);
+        addChild(new TreeItem(*node, this));
     }
 }
 
@@ -34,14 +31,14 @@ int TreeItem::columnCount() const {
 
 QVariant TreeItem::data(int column) const {
     Q_UNUSED(column)
-    return getName();
+    return name_;
 }
 
 int TreeItem::row() const {
     if (parent()) {
         auto childs = parent()->childs();
         for (int i = 0; i < childs.size(); i++) {
-            if (fullKey() == childs.at(i)->fullKey()) {
+            if (key() == childs.at(i)->key()) {
                 return i;
             }
         }
@@ -50,10 +47,6 @@ int TreeItem::row() const {
     return 0;
 }
 
-void TreeItem::fromPrefixNode(const PrefixNode *node) {
-    if (getName() != node->getName())
-        setName(node->getName());
-
-    if (getDescription() != node->getDescription())
-        setDescription(node->getDescription());
+void TreeItem::setName(const QString &name) {
+    name_ = name;
 }

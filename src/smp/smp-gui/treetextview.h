@@ -10,9 +10,11 @@ class TreeTextView;
 
 namespace libsmp {
 class ControllerInterface;
+struct Data;
 }
 
 class TreeModel;
+class TreeItem;
 
 class TreeTextView final : public QWidget, public libsmp::Observer {
     Q_OBJECT
@@ -21,8 +23,8 @@ public:
 
     void setController(libsmp::sp<libsmp::ControllerInterface> controller);
 
-    void updateRequestedObject(const libsmp::Node *node) override final;
-    void updateDescription(const QString &description) override final;
+    void updateRequestedObject(const libsmp::Node &node) override final;
+    void updateData(const libsmp::Data &data) override final;
 
     ~TreeTextView();
 
@@ -31,7 +33,8 @@ private slots:
 
     void on_pushButton_addElement_clicked();
 
-private:
+private:    
+    TreeItem *currentTreeItem();
     Ui::TreeTextView *ui;
     libsmp::sp<libsmp::ControllerInterface> controller_;
     libsmp::sp<TreeModel> model_;

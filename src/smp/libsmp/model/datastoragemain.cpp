@@ -18,29 +18,32 @@ void DataStorageMain::addChildObject(const Key &key) {
 
     data_map_[keyNode] = Data{};
 
-    auto node = tree_->getNodeWithKey(key);
+    auto node = tree_->getNodeWithKey(keyNode);
     if (node != nullptr)
         updateObject(node);
 }
 
 void DataStorageMain::setNameForObject(const Key &key, const QString &name) {
-    if (data_map_.count(key) > 0)
-        data_map_[key].name = name;
-
-    updateObject(tree_->getNodeWithKey(key));
+    if (data_map_.count(key) == 0)
+        return;
+    auto &data = data_map_[key];
+    data.name = name;
+    updateData(data);
 }
 
 void DataStorageMain::setDescriptionForObject(const Key &key, const QString &description) {
-    if (data_map_.count(key) > 0)
-        data_map_[key].description = description;
-    updateDescription(description);
+    if (data_map_.count(key) == 0)
+        return;
+    auto &data = data_map_[key];
+    data.description = description;
+    updateData(data);
 }
 
-void DataStorageMain::requestDescriptionForObject(const Key &key) {
+void DataStorageMain::requestDataForObject(const Key &key) {
     auto it = data_map_.find(key);
     if (it == std::end(data_map_)) return;
 
-    updateDescription((*it).second.description);
+    updateData((*it).second);
 }
 
 void DataStorageMain::requestObject(const Key &key) {
@@ -56,13 +59,13 @@ void DataStorageMain::addObserver(Observer *observer) {
 
 void DataStorageMain::updateObject(const Node *node) {
     for (auto & observer : observers_) {
-        observer->updateRequestedObject(node);
+        observer->updateRequestedObject(*node);
     }
 }
 
-void DataStorageMain::updateDescription(const QString &description) {
+void DataStorageMain::updateData(const Data &data) {
     for (auto &observer : observers_) {
-        observer->updateDescription(description);
+        observer->updateData(data);
     }
 }
 

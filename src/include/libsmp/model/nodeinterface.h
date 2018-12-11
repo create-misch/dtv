@@ -34,26 +34,19 @@ public:
 inline NodeInterface* nodeWithKey(const NodeInterface *root, const Key &key) {
     NodeInterface *findNode = nullptr;
 
-    if (!root) return findNode;
+    if (!root) return findNode;    
     if (root->childs().size() == 0) return findNode;
 
     for (const auto &node : root->childs()) {
-        if (node->key() == key)
+        if (node->key() == key) {
             return node;
+        }
+
+        findNode = nodeWithKey(node, key);
+        if (findNode != nullptr)
+            return findNode;
     }
     return findNode;
 }
-
-//inline bool replaceNode(NodeInterface *root, NodeInterface *nodeReplace, const std::string &key) {
-//    auto searchNode = nodeWithKey(root, key);
-//    nodeReplace->setParent(searchNode->parent());
-//    auto &childs = searchNode->parent()->childs();
-//    auto idNodeForReplace = childs.indexOf(searchNode);
-
-//    delete childs[idNodeForReplace];
-//    childs[idNodeForReplace] = nodeReplace;
-
-//    return true;
-//}
 
 }

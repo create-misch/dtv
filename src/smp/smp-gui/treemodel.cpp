@@ -9,10 +9,6 @@ class TreeItem;
 
 using namespace libsmp;
 
-TreeItem* toTreeItem(void *data) {
-    return static_cast<TreeItem *>(data);
-}
-
 TreeModel::TreeModel(libsmp::sp<ControllerInterface> controller, QObject *parent)
     : QAbstractItemModel(parent),
       controller_(controller) {}
@@ -30,22 +26,29 @@ int TreeModel::columnCount(const QModelIndex &parent) const {
         return rootItem->columnCount();
 }
 
-void TreeModel::setItem(const PrefixNode *item) {
-    auto node = toTreeItem(nodeWithKey(rootItem, item->fullKey()));
-    if (node != nullptr && node->parent() != nullptr) {
-        node->fromPrefixNode(item);
-        if (node->childCount() != item->childs().size()) {
-            auto nodeIndex = createIndex(node->row(), 0, node);
-            beginInsertRows(nodeIndex, node->childCount(), node->childCount());
-            node->addChild(new TreeItem(*static_cast<PrefixNode *>(item->childs().last())));
-            endInsertRows();
-        }
-    } else {
+void TreeModel::setItem(const Node &item, const QModelIndex &currentIndex) {
+    if (item.parent() == nullptr) {
         beginResetModel();
         delete rootItem;
-        rootItem = new TreeItem(*item);
+        rootItem = new TreeItem(item);
         endResetModel();
+        return;
     }
+
+    auto treeItem = toTreeItem(currentIndex);
+    if (treeItem == nullptr) {
+        treeItem = rootItem;
+    }
+
+    if (treeItem->key() == item.parent()->key()){
+        beginInsertRows(currentIndex, treeItem->childCount(), treeItem->childCount());
+        treeItem->addChild(new TreeItem(item));
+        endInsertRows();
+    };
+}
+
+TreeItem *TreeModel::getRootItem() {
+    return rootItem;
 }
 
 QVariant TreeModel::data(const QModelIndex &index, int role) const {
@@ -66,7 +69,7 @@ bool TreeModel::setData(const QModelIndex &index,
         return false;
 
     TreeItem *item = static_cast<TreeItem*>(index.internalPointer());
-    controller_->setNameForObject(item->fullKey(), value.toString());
+    controller_->setNameForObject(item->key(), value.toString());
 
     return true;
 }

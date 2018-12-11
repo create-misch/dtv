@@ -5,8 +5,9 @@
 namespace libsmp {
 
 class Node : public NodeInterface {
-public:
-    Node(const Key &key, NodeInterface *parent = nullptr);
+public:    
+    Node() = default;
+    Node(const Key &key, NodeInterface *parent = nullptr);    
     virtual ~Node();
 
     void setKey(const Key &key) override final;

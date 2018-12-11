@@ -25,7 +25,8 @@ MainWindow::MainWindow(QWidget *parent) :
         auto treeTextView = new TreeTextView;
         auto controller = libsmp::FactoryController::createController(treeTextView, nameProject);
         treeTextView->setController(controller);
-        controller->requestObject(std::string());
+        controller->requestObject(0);
+        controller->requestDataForObject(0);
 
         ui->tabWidget->addTab(treeTextView, nameProject);
     });

@@ -19,8 +19,8 @@ void ControllerMain::setDescriptionForObject(const Key &key, const QString &desc
     model_->setDescriptionForObject(key, description);
 }
 
-void ControllerMain::requestDescriptionForObject(const Key &key) {
-    model_->requestDescriptionForObject(key);
+void ControllerMain::requestDataForObject(const Key &key) {
+    model_->requestDataForObject(key);
 }
 
 void ControllerMain::requestObject(const Key &key) {

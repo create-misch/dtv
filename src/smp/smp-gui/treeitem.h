@@ -3,11 +3,11 @@
 #include <QList>
 #include <QVariant>
 
-#include <model/prefixnode.h>
+#include <model/node.h>
 
-class TreeItem : public libsmp::PrefixNode {
+class TreeItem : public libsmp::Node {
 public:
-    explicit TreeItem(const PrefixNode &node, libsmp::NodeInterface * parentItem = nullptr);
+    explicit TreeItem(const Node &node, libsmp::NodeInterface * parentItem = nullptr);
     virtual ~TreeItem();
 
     libsmp::NodeInterface * child(int row);
@@ -16,5 +16,8 @@ public:
     QVariant data(int column) const;
     int row() const;
 
-    void fromPrefixNode(const PrefixNode *node);
+    void setName(const QString &name);
+
+private:
+    QString name_ = QObject::tr("New object");
 };
