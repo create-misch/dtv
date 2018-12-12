@@ -1,6 +1,9 @@
 #include <QSqlQuery>
 
+#include <model/nodeinterface.h>
 #include <model/database.h>
+#include <model/nodetree.h>
+#include <model/packer.h>
 
 #include <model/hardstoragedb.h>
 
@@ -11,11 +14,17 @@ HardStorageDB::HardStorageDB() :
 
 HardStorageDB::~HardStorageDB() {}
 
-void HardStorageDB::saveStorageToFile(const QString &fileName, const DataMap &dataMap, const NodeTree *nodeTree) {
-    db_->connectToDatabase(fileName);
+void HardStorageDB::saveStorageToFile(const QString &fileName, const DataMap &dataMap,
+                                      const NodeTree *nodeTree) {
+    if (!db_->connectToDatabase(fileName))
+        return;
 
-    auto qry = db_->executeQuery("CREATE TABLE smp ("
-                 "int , int)");
+    auto visitorSave = [dataMap, this] (const NodeInterface &node) {
+        auto parent_key = node.parent() == nullptr ? -1 : node.parent()->key();
+        auto complete = db_->saveData(node.key(), parent_key, pack(dataMap.at(node.key())));
+        Q_UNUSED(complete)
+    };
+    nodeTree->recursiveVisitor(visitorSave);
 }
 
 void HardStorageDB::loadStorageFromFile(const QString &fileName, DataMap &dataMap, NodeTree *nodeTree) {

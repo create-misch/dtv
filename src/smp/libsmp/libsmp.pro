@@ -40,14 +40,15 @@ libheaders.files =                                                  \
     $$libsmp_includedir/controller/controllerinterface.h \
     $$libsmp_includedir/controller/controllermain.h \    
     $$libsmp_includedir/controller/factorycontroller.h \
-
+    $$libsmp_includedir/model/hardstorageinterface.h \
+    $$libsmp_includedir/model/hardstoragedb.h \
+    $$libsmp_includedir/model/database.h \
+    $$libsmp_includedir/model/packer.h
 
 
 # Заголовочные файлы
-HEADERS  += $${libheaders.files} \
-    ../../include/libsmp/model/hardstorageinterface.h \
-    ../../include/libsmp/model/hardstoragedb.h \
-    ../../include/libsmp/model/database.h
+HEADERS  += $${libheaders.files}
+
 
 # Исходники
 SOURCES += \
@@ -56,6 +57,6 @@ SOURCES += \
     model/nodetree.cpp \
     model/datastoragemain.cpp \
     model/hardstoragedb.cpp \
-    ../../include/libsmp/model/database.cpp
+    model/database.cpp
 
 DISTFILES +=

@@ -27,6 +27,21 @@ Node *NodeTree::getNodeWithKey(const Key &key) {
     return dynamic_cast<Node *>(nodeWithKey(root_node_, key));
 }
 
+void NodeTree::recursiveVisitor(NodeInterface *root, Visitor visitor) const {
+    if (!root) return;
+    visitor(*root);
+
+    if (root->childs().size() == 0) return;
+
+    for (auto node : root->childs()) {
+        recursiveVisitor(node, visitor);
+    }
+}
+
+void NodeTree::recursiveVisitor(NodeTree::Visitor visitor) const {
+    recursiveVisitor(root_node_, visitor);
+}
+
 Key NodeTree::nextKey() const {
     if (root_node_ == nullptr)
         return 0;

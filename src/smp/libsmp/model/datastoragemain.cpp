@@ -10,11 +10,11 @@ namespace libsmp {
 
 DataStorageMain::DataStorageMain() :
     tree_(new NodeTree),
-    hardStorage_(new HardStorageDB) {
-    hardStorage_->saveStorageToFile("./datab", data_map_, tree_.get());
-}
+    hardStorage_(new HardStorageDB) {}
 
-DataStorageMain::~DataStorageMain() {}
+DataStorageMain::~DataStorageMain() {
+    hardStorage_->saveStorageToFile("./database", data_map_, tree_.get());
+}
 
 void DataStorageMain::addChildObject(const Key &key) {
     auto keyNode = tree_->addChildForKey(key);
