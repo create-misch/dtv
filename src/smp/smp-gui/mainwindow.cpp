@@ -17,7 +17,6 @@ MainWindow::MainWindow(QWidget *parent) :
             ui->tabWidget->removeTab(index);
     });
 
-
     connect(ui->actionCreate_Project, &QAction::triggered, this, [this] () {
         QString nameProject = QInputDialog::getText(this, tr("Create Project"),
                                                     tr("Name Project"));
@@ -29,6 +28,20 @@ MainWindow::MainWindow(QWidget *parent) :
         controller->requestDataForObject(0);
 
         ui->tabWidget->addTab(treeTextView, nameProject);
+    });
+
+    connect(ui->actionLoad_Project, &QAction::triggered, this, [this] () {
+        QString nameProjectFile = QInputDialog::getText(this, tr("Load Project"),
+                                                    tr("Name Project file"));
+
+        auto treeTextView = new TreeTextView;
+        auto controller = libsmp::FactoryController::createControllerFromStorage(treeTextView,
+                                                                                 nameProjectFile);
+        treeTextView->setController(controller);
+        controller->requestObject(0);
+        controller->requestDataForObject(0);
+
+        ui->tabWidget->addTab(treeTextView, nameProjectFile.section("/", -1));
     });
 }
 

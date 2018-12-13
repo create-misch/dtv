@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QSqlQuery>
+#include <QVariantList>
 
 #include <global.h>
 
@@ -15,8 +16,9 @@ public:
     bool connectToDatabase(const QString &name);
 
     bool saveData(const Key &key, const Key &parentKey, const QByteArray &data);
+    QList<QVariantList> loadData();
 private:
-    QSqlQuery executeQueryString(const QString &query);
+    QSqlQuery executeQueryString(const QString &queryString);
     QSqlQuery executeQuery(QSqlQuery &query);
 
     QSqlQuery query();

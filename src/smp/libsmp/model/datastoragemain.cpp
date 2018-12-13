@@ -8,12 +8,17 @@
 
 namespace libsmp {
 
-DataStorageMain::DataStorageMain() :
+DataStorageMain::DataStorageMain(const QString &fileHardStorage) :
     tree_(new NodeTree),
-    hardStorage_(new HardStorageDB) {}
+    hardStorage_(new HardStorageDB) {
+    if (!fileHardStorage.isEmpty()) {
+        hardStorage_->loadStorageFromFile(fileHardStorage, data_map_, tree_.get());
+    }
+}
 
 DataStorageMain::~DataStorageMain() {
-    hardStorage_->saveStorageToFile("./database", data_map_, tree_.get());
+    hardStorage_->saveStorageToFile(QString("./%1").arg(data_map_.at(defaultKey).name),
+                                    data_map_, tree_.get());
 }
 
 void DataStorageMain::addChildObject(const Key &key) {

@@ -8,6 +8,8 @@ namespace libsmp {
 class Node;
 class NodeInterface;
 
+constexpr Key defaultKey = 0;
+
 class NodeTree {
 public:
     NodeTree();
@@ -15,6 +17,8 @@ public:
 
     Key addChildForKey(const Key &key);
     Node* getNodeWithKey(const Key &key);
+
+    void insertNode(const Key &key, const Key &keyParent);
 
     using Visitor = std::function<void (const NodeInterface &node)>;
 

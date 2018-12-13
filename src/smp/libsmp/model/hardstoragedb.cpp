@@ -21,16 +21,30 @@ void HardStorageDB::saveStorageToFile(const QString &fileName, const DataMap &da
 
     auto visitorSave = [dataMap, this] (const NodeInterface &node) {
         auto parent_key = node.parent() == nullptr ? -1 : node.parent()->key();
-        auto complete = db_->saveData(node.key(), parent_key, pack(dataMap.at(node.key())));
-        Q_UNUSED(complete)
+        db_->saveData(node.key(), parent_key, pack(dataMap.at(node.key())));
     };
     nodeTree->recursiveVisitor(visitorSave);
 }
 
 void HardStorageDB::loadStorageFromFile(const QString &fileName, DataMap &dataMap, NodeTree *nodeTree) {
-    Q_UNUSED(fileName)
-    Q_UNUSED(dataMap)
-    Q_UNUSED(nodeTree)
+    if (!db_->connectToDatabase(fileName))
+        return;
+
+    auto data = db_->loadData();
+
+    auto loadData = [&dataMap, nodeTree] (QVariantList && list) {
+        Data data;
+        unpack(list.at(2).toByteArray(), data);
+        auto key = qvariant_cast<Key>(list.at(0));
+        auto keyParent = qvariant_cast<Key>(list.at(1));
+        dataMap[key] = std::move(data);
+
+        nodeTree->insertNode(key, keyParent);
+    };
+
+    for (auto &&list : data) {
+        loadData(std::move(list));
+    }
 }
 
 }

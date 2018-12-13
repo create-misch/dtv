@@ -24,6 +24,16 @@ public:
 
         return controller;
     }
+
+    static sp<ControllerInterface> createControllerFromStorage(Observer* observer,
+                                                               const QString fileStorage) {
+        auto model = std::make_shared<DataStorageMain>(fileStorage);
+        auto controller = std::make_shared<ControllerMain>(model);
+
+        model->addObserver(observer);
+
+        return controller;
+    }
 };
 
 }

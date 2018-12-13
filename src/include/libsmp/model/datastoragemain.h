@@ -21,7 +21,7 @@ using DataMap = std::unordered_map<Key, Data>;
 
 class DataStorageMain final : public DataStorageInterface {
 public:
-    DataStorageMain();
+    DataStorageMain(const QString &fileHardStorage = QString());
     ~DataStorageMain();
 
     void addChildObject(const Key &key) override final;

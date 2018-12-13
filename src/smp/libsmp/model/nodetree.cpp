@@ -23,8 +23,18 @@ Key NodeTree::addChildForKey(const Key &key) {
 }
 
 Node *NodeTree::getNodeWithKey(const Key &key) {
-    if (key == 0) return dynamic_cast<Node *>(root_node_);
+    if (key == defaultKey) return dynamic_cast<Node *>(root_node_);
     return dynamic_cast<Node *>(nodeWithKey(root_node_, key));
+}
+
+void NodeTree::insertNode(const Key &key, const Key &keyParent) {
+    if (key == defaultKey) {
+        root_node_ = new Node(key);
+        return;
+    }
+
+    auto node = getNodeWithKey(keyParent);
+    node->addChild(new Node(key));
 }
 
 void NodeTree::recursiveVisitor(NodeInterface *root, Visitor visitor) const {
@@ -44,7 +54,7 @@ void NodeTree::recursiveVisitor(NodeTree::Visitor visitor) const {
 
 Key NodeTree::nextKey() const {
     if (root_node_ == nullptr)
-        return 0;
+        return defaultKey;
     return dynamic_cast<Node *>(root_node_)->size() + 1;
 }
 

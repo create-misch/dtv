@@ -2,13 +2,12 @@
 #include <QSqlError>
 #include <QSqlDatabase>
 #include <QSqlQuery>
+#include <QSqlDriver>
 #include <iostream>
 
 #include <QVariant>
 
 #include <model/database.h>
-
-
 
 namespace  {
 constexpr auto nameTable= "smp";
@@ -35,22 +34,39 @@ bool Database::connectToDatabase(const QString &name) {
 }
 
 bool Database::saveData(const Key &key, const Key &parentKey, const QByteArray &data) {
-    auto saveQuery = prepare("INSERT INTO (:table) (key, parent_key, data)"
+    auto saveQuery = prepare("INSERT OR REPLACE INTO smp (key, parent_key, data)"
                              " VALUES ((:key), (:parent_key), (:data))");
-    saveQuery.bindValue(":table", nameTable);
     saveQuery.bindValue(":key", key);
     saveQuery.bindValue(":parent_key", parentKey);
     saveQuery.bindValue(":data", data);
-    saveQuery.exec();
+    auto res = saveQuery.exec();
 
-    std::cout << "Error save table " << saveQuery.lastError().text().toStdString() << std::endl;
-    return false;
+    if (!res)
+        std::cout << "Error save table " << saveQuery.lastError().text().toStdString() << std::endl;
+    return res;
 }
 
-QSqlQuery executeQueryString(const QString &query) {
-    QSqlQuery qry(QSqlDatabase::database());
+QList<QVariantList> Database::loadData() {
+    auto result = QList<QVariantList>();
+    auto loadQuery = prepare("SELECT * FROM smp");
+    if (!loadQuery.exec())
+        return result;
 
-    qry.exec(query);
+    while(loadQuery.next()) {
+        auto list =  QVariantList();
+        list.append(loadQuery.value(0));
+        list.append(loadQuery.value(1));
+        list.append(loadQuery.value(2));
+        result.push_back(list);
+    }
+
+    return result;
+}
+
+QSqlQuery Database::executeQueryString(const QString &queryString) {
+    auto qry = query();
+
+    qry.exec(queryString);
     return qry;
 }
 
@@ -60,7 +76,7 @@ QSqlQuery Database::executeQuery(QSqlQuery &query) {
 }
 
 QSqlQuery Database::query() {
-    return QSqlQuery(QSqlDatabase::database());
+    return QSqlQuery(QString(), QSqlDatabase::database());
 }
 
 bool Database::prepare(QSqlQuery &query, const QString &str) {
@@ -70,21 +86,16 @@ bool Database::prepare(QSqlQuery &query, const QString &str) {
 QSqlQuery Database::prepare(const QString &str) {
     auto q = query();
     prepare(q, str);
+
     return q;
 }
 
 bool Database::createTable() {
-    auto checkTable = prepare("SELECT 1 FROM :table");
-    checkTable.bindValue(":table", nameTable);
-    auto result = checkTable.exec();
-
-    if (result) return result;
-
-    auto createTable = prepare("CREATE TABLE IF NOT EXISTS ? ("
-                              "key INTEGER PRIMARY KEY NOT NULL ,"
-                              "parent_key INTEGER NOT NULL,"
-                              "data BLOB)");
-    createTable.bindValue(0, nameTable);
+    auto createString = QString("CREATE TABLE IF NOT EXISTS %1 ("
+                                  "key INTEGER PRIMARY KEY NOT NULL ,"
+                                  "parent_key INTEGER NOT NULL,"
+                                  "data BLOB)").arg(nameTable);
+    auto createTable = prepare(createString);
 
     auto res = createTable.exec();
     if (!res)
