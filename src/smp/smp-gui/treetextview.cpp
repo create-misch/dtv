@@ -30,13 +30,12 @@ void TreeTextView::setController(libsmp::sp<libsmp::ControllerInterface> control
     ui->treeView->setModel(model_.get());
 }
 
-void TreeTextView::updateRequestedObject(const libsmp::Node &node) {
-    model_->setItem(node, ui->treeView->currentIndex());
+void TreeTextView::updateRequestedObject(const libsmp::Node &node, const QString &name) {
+    model_->setItem(node, ui->treeView->currentIndex(), name);
 }
 
-void TreeTextView::updateData(const libsmp::Data &data) {
+void TreeTextView::updateData(const libsmp::ExtraData &data) {
     ui->textBrowser->setText(data.description);
-    currentTreeItem()->setName(data.name);
 }
 
 TreeTextView::~TreeTextView() {

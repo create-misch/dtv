@@ -38,7 +38,7 @@ public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     int columnCount(const QModelIndex &parent = QModelIndex()) const override;
 
-    void setItem(const libsmp::Node &item, const QModelIndex &currentIndex);
+    void setItem(const libsmp::Node &item, const QModelIndex &currentIndex, const QString name);
 
     TreeItem *getRootItem();
 

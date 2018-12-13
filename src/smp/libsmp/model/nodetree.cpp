@@ -39,7 +39,7 @@ void NodeTree::insertNode(const Key &key, const Key &keyParent) {
 
 void NodeTree::recursiveVisitor(NodeInterface *root, Visitor visitor) const {
     if (!root) return;
-    visitor(*root);
+    visitor(root);
 
     if (root->childs().size() == 0) return;
 

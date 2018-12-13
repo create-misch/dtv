@@ -17,10 +17,12 @@ namespace libsmp {
 
 Database::Database() {}
 
-bool Database::connectToDatabase(const QString &name) {
-    std::cout <<  "Drivers DB " <<  std::endl;
-    for (const auto &str : QSqlDatabase::drivers())
-        std::cout <<  str.toStdString() <<  std::endl;
+bool Database::connectToDatabase(const QString &name) {    
+    if (!QSqlDatabase::drivers().contains("QSQLITE")) {
+        std::cout << "Not found SQLITE Driver!" << std::endl;
+        return false;
+    }
+
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
 
     db.setDatabaseName(name);

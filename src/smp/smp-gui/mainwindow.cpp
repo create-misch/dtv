@@ -1,4 +1,5 @@
 #include <QInputDialog>
+#include <QFileDialog>
 
 #include <controller/factorycontroller.h>
 
@@ -18,8 +19,8 @@ MainWindow::MainWindow(QWidget *parent) :
     });
 
     connect(ui->actionCreate_Project, &QAction::triggered, this, [this] () {
-        QString nameProject = QInputDialog::getText(this, tr("Create Project"),
-                                                    tr("Name Project"));
+        QString nameProject = QInputDialog::getText(this, tr("Create project"),
+                                                    tr("Name project"));
 
         auto treeTextView = new TreeTextView;
         auto controller = libsmp::FactoryController::createController(treeTextView, nameProject);
@@ -31,8 +32,9 @@ MainWindow::MainWindow(QWidget *parent) :
     });
 
     connect(ui->actionLoad_Project, &QAction::triggered, this, [this] () {
-        QString nameProjectFile = QInputDialog::getText(this, tr("Load Project"),
-                                                    tr("Name Project file"));
+        QString nameProjectFile = QFileDialog::getOpenFileName(this,
+                                                tr("Open project file"), "./", tr("Image Files (*)"));
+
 
         auto treeTextView = new TreeTextView;
         auto controller = libsmp::FactoryController::createControllerFromStorage(treeTextView,

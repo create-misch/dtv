@@ -19,9 +19,9 @@ void HardStorageDB::saveStorageToFile(const QString &fileName, const DataMap &da
     if (!db_->connectToDatabase(fileName))
         return;
 
-    auto visitorSave = [dataMap, this] (const NodeInterface &node) {
-        auto parent_key = node.parent() == nullptr ? -1 : node.parent()->key();
-        db_->saveData(node.key(), parent_key, pack(dataMap.at(node.key())));
+    auto visitorSave = [dataMap, this] (const NodeInterface *node) {
+        auto parent_key = node->parent() == nullptr ? -1 : node->parent()->key();
+        db_->saveData(node->key(), parent_key, pack(dataMap.at(node->key())));
     };
     nodeTree->recursiveVisitor(visitorSave);
 }

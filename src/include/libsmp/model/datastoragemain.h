@@ -34,7 +34,7 @@ public:
 
 private:
     void updateObject(const libsmp::Node *node);
-    void updateData(const Data &data);
+    void updateData(const libsmp::ExtraData &data);
 
     using Observers = std::list<Observer *>;
 

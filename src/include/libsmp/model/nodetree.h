@@ -20,7 +20,7 @@ public:
 
     void insertNode(const Key &key, const Key &keyParent);
 
-    using Visitor = std::function<void (const NodeInterface &node)>;
+    using Visitor = std::function<void (const NodeInterface *node)>;
 
     void recursiveVisitor(Visitor visitor) const;
 

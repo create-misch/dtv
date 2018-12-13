@@ -8,13 +8,16 @@
 class TreeItem : public libsmp::Node {
 public:
     explicit TreeItem(const Node &node, libsmp::NodeInterface * parentItem = nullptr);
+    explicit TreeItem(const Node &node, const QString &name, libsmp::NodeInterface * parentItem = nullptr);
     virtual ~TreeItem();
 
     libsmp::NodeInterface * child(int row);
+    TreeItem *childWithKey(const libsmp::Key &key);
     int childCount() const;
     int columnCount() const;
     QVariant data(int column) const;
     int row() const;
+
 
     void setName(const QString &name);
 

@@ -15,10 +15,24 @@ TreeItem::TreeItem(const Node &node, NodeInterface *parent) :
     }
 }
 
+TreeItem::TreeItem(const Node &node, const QString &name, NodeInterface *parentItem) :
+    TreeItem(node, parentItem) {
+    setName(name);
+}
+
+
 TreeItem::~TreeItem() {}
 
 NodeInterface* TreeItem::child(int row) {
     return childs()[row];
+}
+
+TreeItem *TreeItem::childWithKey(const Key &key) {
+    for (auto child : childs()) {
+        if (child->key() == key)
+            return dynamic_cast<TreeItem *>(child);
+    }
+    return nullptr;
 }
 
 int TreeItem::childCount() const {
