@@ -31,10 +31,11 @@ public:
     virtual bool desirialize(const QByteArray &data) = 0;
 };
 
-inline NodeInterface* nodeWithKey(const NodeInterface *root, const Key &key) {
+inline NodeInterface* nodeWithKey(NodeInterface *root, const Key &key) {
     NodeInterface *findNode = nullptr;
 
-    if (!root) return findNode;    
+    if (!root) return findNode;
+    if (root->key() == key) return root;
     if (root->childs().size() == 0) return findNode;
 
     for (const auto &node : root->childs()) {

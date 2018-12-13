@@ -10,7 +10,7 @@ class TreeTextView;
 
 namespace libsmp {
 class ControllerInterface;
-struct Data;
+struct ExtraData;
 }
 
 class TreeModel;
@@ -23,8 +23,8 @@ public:
 
     void setController(libsmp::sp<libsmp::ControllerInterface> controller);
 
-    void updateRequestedObject(const libsmp::Node &node) override final;
-    void updateData(const libsmp::Data &data) override final;
+    void updateRequestedObject(const libsmp::Node &node, const QString &name) override final;
+    void updateData(const libsmp::ExtraData &data) override final;
 
     ~TreeTextView();
 

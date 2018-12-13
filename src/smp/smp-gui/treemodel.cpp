@@ -26,23 +26,43 @@ int TreeModel::columnCount(const QModelIndex &parent) const {
         return rootItem->columnCount();
 }
 
-void TreeModel::setItem(const Node &item, const QModelIndex &currentIndex) {
+void TreeModel::setItem(const Node &item, const QModelIndex &currentIndex, const QString name) {
     if (item.parent() == nullptr) {
         beginResetModel();
         delete rootItem;
-        rootItem = new TreeItem(item);
+        rootItem = new TreeItem(item, name);
         endResetModel();
         return;
     }
 
     auto treeItem = toTreeItem(currentIndex);
-    if (treeItem == nullptr) {
-        treeItem = rootItem;
+    /// если элемент есть и нужно просто заменить данные
+    if (treeItem != nullptr && treeItem->key() == item.key()) {
+            treeItem->setName(name);
+            return;
     }
 
-    if (treeItem->key() == item.parent()->key()){
-        beginInsertRows(currentIndex, treeItem->childCount(), treeItem->childCount());
-        treeItem->addChild(new TreeItem(item));
+    if (treeItem == nullptr) {
+        treeItem = toTreeItem(nodeWithKey(rootItem, item.parent()->key()));
+    }
+
+    auto node = treeItem->childWithKey(item.key());
+    if (node != nullptr) {
+        node->setName(name);
+        return;
+    }
+
+    QModelIndex index;
+    index = currentIndex.isValid() == false ?
+                treeItem->parent() == nullptr ? QModelIndex()
+                                              : createIndex(treeItem->row(), 0, treeItem)
+                                              : currentIndex;
+
+    if (treeItem == nullptr) return;
+
+    if (treeItem->key() == item.parent()->key()) {
+        beginInsertRows(index, treeItem->childCount(), treeItem->childCount());
+        treeItem->addChild(new TreeItem(item, name));
         endInsertRows();
     };
 }

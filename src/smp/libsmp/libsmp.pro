@@ -14,7 +14,7 @@ TARGET = smp$${POST}
 include(../../options.pri)
 
 # Настройки QT
-QT += core
+QT += core sql
 
 # Подключаемые библиотеки
 
@@ -40,17 +40,23 @@ libheaders.files =                                                  \
     $$libsmp_includedir/controller/controllerinterface.h \
     $$libsmp_includedir/controller/controllermain.h \    
     $$libsmp_includedir/controller/factorycontroller.h \
-
+    $$libsmp_includedir/model/hardstorageinterface.h \
+    $$libsmp_includedir/model/hardstoragedb.h \
+    $$libsmp_includedir/model/database.h \
+    $$libsmp_includedir/model/packer.h
 
 
 # Заголовочные файлы
-HEADERS  += $${libheaders.files} \
+HEADERS  += $${libheaders.files}
+
 
 # Исходники
 SOURCES += \
     controller/controllermain.cpp \
     model/node.cpp \
     model/nodetree.cpp \
-    model/datastoragemain.cpp
+    model/datastoragemain.cpp \
+    model/hardstoragedb.cpp \
+    model/database.cpp
 
 DISTFILES +=
