@@ -1,25 +1,26 @@
 #pragma once
 
-#include <model/datastoragemain.h>
+#include <global.h>
+#include <unordered_map>
 
 class QString;
+class QByteArray;
 
 namespace libsmp {
 
-//class DataMap;
 class NodeTree;
+struct Data;
 
 class HardStorageInterface {
 public:
     virtual ~HardStorageInterface() {}
-//    virtual void saveNameWithKey(const Key &key, const QString &name) = 0;
-//    virtual void saveDescriptorWithKey(const Key &key, const QString &descriptor) = 0;
-//    virtual void saveDataWithKey(const Key &key, const Data &data) =0;
-
-    virtual void saveStorageToFile(const QString &fileName, const DataMap &dataMap,
+    virtual void saveStorageToFile(const QString &fileName, const std::unordered_map<Key, Data> &dataMap,
                                    const NodeTree *nodeTree) = 0;
 
-    virtual void loadStorageFromFile(const QString &fileName, DataMap &dataMap, NodeTree *nodeTree) = 0;
+    virtual void loadStorageFromFile(const QString &fileName,
+                                     std::unordered_map<Key, Data> &dataMap, NodeTree *nodeTree) = 0;
+
+    virtual void saveDocumentInStorage(const Key &key, QByteArray &&data) = 0;
 };
 
 }

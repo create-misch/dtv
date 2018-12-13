@@ -15,6 +15,7 @@ struct ExtraData;
 
 class TreeModel;
 class TreeItem;
+class FileInfoModel;
 
 class TreeTextView final : public QWidget, public libsmp::Observer {
     Q_OBJECT
@@ -33,9 +34,12 @@ private slots:
 
     void on_pushButton_addElement_clicked();
 
-private:    
+    void on_pushButton_addFile_clicked();
+
+private:
     TreeItem *currentTreeItem();
     Ui::TreeTextView *ui;
     libsmp::sp<libsmp::ControllerInterface> controller_;
     libsmp::sp<TreeModel> model_;
+    libsmp::sp<FileInfoModel> fileInfoModel_;
 };

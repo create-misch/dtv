@@ -4,9 +4,9 @@
 #include <string>
 
 class QString;
+class QByteArray;
 
 namespace libsmp {
-
 
 class DataStorageInterface {
 public:
@@ -16,6 +16,7 @@ public:
     virtual void setDescriptionForObject(const Key &key, const QString &description) = 0;
     virtual void requestDataForObject(const Key &key) = 0;
     virtual void requestObject(const Key &key) = 0;
+    virtual void saveFile(const Key &key, const QString &nameFile, QByteArray &&dataFile) = 0;
 
 };
 

@@ -33,7 +33,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(ui->actionLoad_Project, &QAction::triggered, this, [this] () {
         QString nameProjectFile = QFileDialog::getOpenFileName(this,
-                                                tr("Open project file"), "./", tr("Image Files (*)"));
+                                                tr("Open project file"), "./", tr("Image Files (*.smp)"));
 
 
         auto treeTextView = new TreeTextView;

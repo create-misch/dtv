@@ -4,6 +4,7 @@
 #include <model/database.h>
 #include <model/nodetree.h>
 #include <model/packer.h>
+#include <model/data.h>
 
 #include <model/hardstoragedb.h>
 
@@ -14,9 +15,10 @@ HardStorageDB::HardStorageDB() :
 
 HardStorageDB::~HardStorageDB() {}
 
-void HardStorageDB::saveStorageToFile(const QString &fileName, const DataMap &dataMap,
+void HardStorageDB::saveStorageToFile(const QString &fileName, const std::unordered_map<Key, Data> &dataMap,
                                       const NodeTree *nodeTree) {
-    if (!db_->connectToDatabase(fileName))
+    auto nameDataBase = QString(fileName).arg(".smp");
+    if (!db_->connectToDatabase(nameDataBase))
         return;
 
     auto visitorSave = [dataMap, this] (const NodeInterface *node) {
@@ -26,7 +28,7 @@ void HardStorageDB::saveStorageToFile(const QString &fileName, const DataMap &da
     nodeTree->recursiveVisitor(visitorSave);
 }
 
-void HardStorageDB::loadStorageFromFile(const QString &fileName, DataMap &dataMap, NodeTree *nodeTree) {
+void HardStorageDB::loadStorageFromFile(const QString &fileName, std::unordered_map<Key, Data> &dataMap, NodeTree *nodeTree) {
     if (!db_->connectToDatabase(fileName))
         return;
 
@@ -45,6 +47,10 @@ void HardStorageDB::loadStorageFromFile(const QString &fileName, DataMap &dataMa
     for (auto &&list : data) {
         loadData(std::move(list));
     }
+}
+
+void HardStorageDB::saveDocumentInStorage(const Key &key, QByteArray &&data) {
+    db_->saveDataFile(key, std::move(data));
 }
 
 }

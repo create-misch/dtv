@@ -68,6 +68,14 @@ void DataStorageMain::requestObject(const Key &key) {
     updateObject(node);
 }
 
+void DataStorageMain::saveFile(const Key &key, const QString &nameFile, QByteArray &&dataFile) {
+    FileInfo fileInfo = {nameFile.section(".", 0), dataFile.size(), nameFile.section(".", -1)};
+
+    auto &extraData = data_map_[key].extraData;
+    extraData.filesInfo.push_back(std::move(fileInfo));
+    updateData(extraData);
+}
+
 void DataStorageMain::addObserver(Observer *observer) {
     observers_.push_back(observer);
 }

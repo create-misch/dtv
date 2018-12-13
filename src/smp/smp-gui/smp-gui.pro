@@ -34,7 +34,8 @@ HEADERS  += \
     mainwindow.h \
     treeitem.h \
     treemodel.h \
-    treetextview.h
+    treetextview.h \
+    fileinfomodel.h
 
 # Исходники
 SOURCES += \
@@ -42,7 +43,8 @@ SOURCES += \
     main.cpp \
     treeitem.cpp \
     treemodel.cpp \
-    treetextview.cpp
+    treetextview.cpp \
+    fileinfomodel.cpp
 
 FORMS += \
     mainwindow.ui \

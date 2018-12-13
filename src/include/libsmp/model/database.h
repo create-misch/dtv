@@ -17,6 +17,9 @@ public:
 
     bool saveData(const Key &key, const Key &parentKey, const QByteArray &data);
     QList<QVariantList> loadData();
+
+    bool saveDataFile(const Key &key, QByteArray &&data);
+
 private:
     QSqlQuery executeQueryString(const QString &queryString);
     QSqlQuery executeQuery(QSqlQuery &query);

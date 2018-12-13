@@ -11,6 +11,7 @@
 
 namespace  {
 constexpr auto nameTable= "smp";
+constexpr auto version_storage = "0.1";
 }
 
 namespace libsmp {
@@ -36,11 +37,12 @@ bool Database::connectToDatabase(const QString &name) {
 }
 
 bool Database::saveData(const Key &key, const Key &parentKey, const QByteArray &data) {
-    auto saveQuery = prepare("INSERT OR REPLACE INTO smp (key, parent_key, data)"
-                             " VALUES ((:key), (:parent_key), (:data))");
+    auto saveQuery = prepare("INSERT OR REPLACE INTO smp (key, parent_key, data, version)"
+                             " VALUES ((:key), (:parent_key), (:data), (:version))");
     saveQuery.bindValue(":key", key);
     saveQuery.bindValue(":parent_key", parentKey);
     saveQuery.bindValue(":data", data);
+    saveQuery.bindValue(":version", version_storage);
     auto res = saveQuery.exec();
 
     if (!res)
@@ -63,6 +65,18 @@ QList<QVariantList> Database::loadData() {
     }
 
     return result;
+}
+
+bool Database::saveDataFile(const Key &key, QByteArray &&data) {
+    auto saveQuery = prepare("INSERT OR REPLACE INTO smp (key, file_data)"
+                             " VALUES ((:key), (:data))");
+    saveQuery.bindValue(":key", key);
+    saveQuery.bindValue(":data", data);
+    auto res = saveQuery.exec();
+
+    if (!res)
+        std::cout << "Error save file " << saveQuery.lastError().text().toStdString() << std::endl;
+    return res;
 }
 
 QSqlQuery Database::executeQueryString(const QString &queryString) {
@@ -96,7 +110,9 @@ bool Database::createTable() {
     auto createString = QString("CREATE TABLE IF NOT EXISTS %1 ("
                                   "key INTEGER PRIMARY KEY NOT NULL ,"
                                   "parent_key INTEGER NOT NULL,"
-                                  "data BLOB)").arg(nameTable);
+                                  "data BLOB,"
+                                  "file_data BLOB,"
+                                  "version TEXT)").arg(nameTable);
     auto createTable = prepare(createString);
 
     auto res = createTable.exec();

@@ -4,27 +4,31 @@
 
 namespace libsmp {
 
-ControllerMain::ControllerMain(sp<DataStorageInterface> model) :
-    model_(model) {}
+ControllerMain::ControllerMain(sp<DataStorageInterface> storage) :
+    storage_(storage) {}
 
 void ControllerMain::addChildObject(const Key &key) {
-    model_->addChildObject(key);
+    storage_->addChildObject(key);
 }
 
 void ControllerMain::setNameForObject(const Key &key, const QString &name) {
-    model_->setNameForObject(key, name);
+    storage_->setNameForObject(key, name);
 }
 
 void ControllerMain::setDescriptionForObject(const Key &key, const QString &description){
-    model_->setDescriptionForObject(key, description);
+    storage_->setDescriptionForObject(key, description);
 }
 
 void ControllerMain::requestDataForObject(const Key &key) {
-    model_->requestDataForObject(key);
+    storage_->requestDataForObject(key);
 }
 
 void ControllerMain::requestObject(const Key &key) {
-    model_->requestObject(key);
+    storage_->requestObject(key);
+}
+
+void ControllerMain::saveFile(const Key &key, const QString &nameFile, QByteArray &&dataFile) {
+    storage_->saveFile(key, nameFile, std::move(dataFile));
 }
 
 }
