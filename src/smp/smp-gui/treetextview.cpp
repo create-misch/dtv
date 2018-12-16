@@ -76,3 +76,23 @@ void TreeTextView::on_pushButton_addFile_clicked() {
     auto dataFile = file.readAll();
     controller_->saveFile(currentTreeItem()->key(), nameDocument.section("/", -1), std::move(dataFile));
 }
+
+void TreeTextView::on_pushButton_deleteFile_clicked() {
+    auto treeItem = toTreeItem(ui->treeView->currentIndex());
+    if (!treeItem)
+        return;
+
+    auto index = ui->treeView_files->currentIndex();
+    auto nameFile = index.data().toString();
+    controller_->deleteFile(treeItem->key(), nameFile);
+}
+
+void TreeTextView::on_pushButton_openFiel_clicked() {
+    auto treeItem = toTreeItem(ui->treeView->currentIndex());
+    if (!treeItem)
+        return;
+
+    auto index = ui->treeView_files->currentIndex();
+    auto nameFile = index.data().toString();
+    controller_->openFile(treeItem->key(), nameFile);
+}

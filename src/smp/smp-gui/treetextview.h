@@ -31,10 +31,10 @@ public:
 
 private slots:
     void on_pushButton_save_clicked();
-
     void on_pushButton_addElement_clicked();
-
     void on_pushButton_addFile_clicked();
+    void on_pushButton_deleteFile_clicked();
+    void on_pushButton_openFiel_clicked();
 
 private:
     TreeItem *currentTreeItem();

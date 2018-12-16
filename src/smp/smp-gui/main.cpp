@@ -1,6 +1,7 @@
 #include <QApplication>
 
 #include <cmath>
+#include <unistd.h>
 
 #include "mainwindow.h"
 

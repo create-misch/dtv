@@ -5,6 +5,11 @@
 
 namespace libsmp {
 
+inline quint64 toHash(QString fileName) {
+    std::hash<std::string> hash_fn;
+    return static_cast<quint64>(hash_fn(fileName.toStdString()));
+}
+
 struct FileInfo {
     QString fileName;
     int size;
@@ -14,7 +19,7 @@ struct FileInfo {
 using FilesInfo = QList<FileInfo>;
 struct ExtraData {
     QString description = "Description";
-     FilesInfo filesInfo;
+    FilesInfo filesInfo;
 };
 
 struct Data {

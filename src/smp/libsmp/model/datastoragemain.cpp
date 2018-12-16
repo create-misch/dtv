@@ -1,3 +1,7 @@
+#include <QDesktopServices>
+#include <QUrl>
+#include <QFileInfo>
+
 #include <model/node.h>
 #include <model/nodetree.h>
 
@@ -17,7 +21,7 @@ DataStorageMain::DataStorageMain(const QString &fileHardStorage) :
 }
 
 DataStorageMain::~DataStorageMain() {
-    hardStorage_->saveStorageToFile(QString("./%1").arg(data_map_.at(defaultKey).name),
+    hardStorage_->saveStorageToFile(QString("./%1.smp").arg(data_map_.at(defaultKey).name),
                                     data_map_, tree_.get());
 }
 
@@ -69,11 +73,60 @@ void DataStorageMain::requestObject(const Key &key) {
 }
 
 void DataStorageMain::saveFile(const Key &key, const QString &nameFile, QByteArray &&dataFile) {
+    if (!hardStorage_->saveDocumentInStorage(key, nameFile, std::move(dataFile))) {
+        return;
+    }
     FileInfo fileInfo = {nameFile.section(".", 0), dataFile.size(), nameFile.section(".", -1)};
 
     auto &extraData = data_map_[key].extraData;
     extraData.filesInfo.push_back(std::move(fileInfo));
     updateData(extraData);
+}
+
+void DataStorageMain::deleteFile(const Key &key, const QString &nameFile) {
+    if (!hardStorage_->deleteDocumentFromStorage(key, nameFile)) {
+        return;
+    }
+    auto &filesInfo = data_map_[key].extraData.filesInfo;
+    filesInfo.erase(std::remove_if(std::begin(filesInfo), std::end(filesInfo),
+                 [&nameFile](const FileInfo &fileInfo) {
+        return fileInfo.fileName == nameFile;
+    }), std::end(filesInfo));
+
+    updateData(data_map_.at(key).extraData);
+}
+
+void DataStorageMain::openFile(const Key &key, const QString &nameFile) {
+    QByteArray data;
+    if (!hardStorage_->unloadDocumentFromStorage(key, nameFile, data)) {
+        return;
+    }
+
+    const auto &filesInfo = data_map_.at(key).extraData.filesInfo;
+    auto it = std::find_if(std::begin(filesInfo), std::end(filesInfo), [nameFile] (const FileInfo &fileInfo) {
+        return fileInfo.fileName == nameFile;
+    });
+
+    if (it == std::end(filesInfo)) {
+        return;
+    }
+    const auto &fileInfo = (*it);
+
+    if (data.size() != fileInfo.size) {
+        return;
+    }
+
+    QString fullNameFile = "./" + nameFile.section(".", 0, 0) + "_cache." + filesInfo.at(0).type;
+    QFile file(fullNameFile);
+    if (!file.open((QIODevice::WriteOnly))) {
+        return;
+    }
+
+    file.write(data.constData(), data.size());
+    QFileInfo fileInfoDir(file);
+
+    QDesktopServices::openUrl(QUrl(QString("file://%1").arg(fileInfoDir.absoluteFilePath()),
+                                   QUrl::TolerantMode));
 }
 
 void DataStorageMain::addObserver(Observer *observer) {

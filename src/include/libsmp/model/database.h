@@ -18,7 +18,10 @@ public:
     bool saveData(const Key &key, const Key &parentKey, const QByteArray &data);
     QList<QVariantList> loadData();
 
-    bool saveDataFile(const Key &key, QByteArray &&data);
+    bool saveDataFile(const Key &key, const QString &nameFile, QByteArray &&data);
+    bool deleteDataFile(const Key &key, const QString &nameFile);
+    bool unloadDataFile(const Key &key, const QString &nameFile, QByteArray &data);
+
 
 private:
     QSqlQuery executeQueryString(const QString &queryString);
@@ -28,7 +31,7 @@ private:
     bool prepare(QSqlQuery &query, const QString &str);
     QSqlQuery prepare(const QString &str);
 
-    bool createTable();
+    bool createTables();
 };
 
 }

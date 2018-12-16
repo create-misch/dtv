@@ -75,6 +75,8 @@ QModelIndex FileInfoModel::parent(const QModelIndex &index) const {
 
 int FileInfoModel::rowCount(const QModelIndex &parent) const {
     Q_UNUSED(parent)
+    if (parent.column() > 0)
+        return 0;
 
     return filesInfo_.size();
 }

@@ -18,7 +18,9 @@ public:
     void loadStorageFromFile(const QString &fileName, std::unordered_map<Key, Data> &dataMap,
                                      NodeTree *nodeTree) override final;
 
-    void saveDocumentInStorage(const Key &key, QByteArray &&data) override final;
+    bool saveDocumentInStorage(const Key &key, const QString &nameFile, QByteArray &&data) override final;
+    bool deleteDocumentFromStorage(const Key &key, const QString &nameFIle) override final;
+    bool unloadDocumentFromStorage(const Key &key, const QString &nameFile, QByteArray &data) override final;
 
 private:
     std::unique_ptr<Database> db_;

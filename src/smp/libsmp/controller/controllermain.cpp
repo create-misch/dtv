@@ -31,5 +31,13 @@ void ControllerMain::saveFile(const Key &key, const QString &nameFile, QByteArra
     storage_->saveFile(key, nameFile, std::move(dataFile));
 }
 
+void ControllerMain::deleteFile(const Key &key, const QString &nameFile) {
+    storage_->deleteFile(key, nameFile);
+}
+
+void ControllerMain::openFile(const Key &key, const QString &nameFile) {
+    storage_->openFile(key, nameFile);
+}
+
 }
 

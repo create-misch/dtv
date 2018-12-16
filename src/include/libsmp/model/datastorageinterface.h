@@ -17,6 +17,8 @@ public:
     virtual void requestDataForObject(const Key &key) = 0;
     virtual void requestObject(const Key &key) = 0;
     virtual void saveFile(const Key &key, const QString &nameFile, QByteArray &&dataFile) = 0;
+    virtual void deleteFile(const Key &key, const QString &nameFile) = 0;
+    virtual void openFile(const Key &key, const QString &nameFile) = 0;
 
 };
 
