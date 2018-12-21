@@ -50,7 +50,7 @@ void HardStorageDB::loadStorageFromFile(const QString &fileName, std::unordered_
 }
 
 bool HardStorageDB::saveDocumentInStorage(const Key &key, const QString &nameFile, QByteArray &&data) {
-    return db_->saveDataFile(key, nameFile, std::move(data));
+    return db_->saveDataFile(key, nameFile, qCompress(data));
 }
 
 bool HardStorageDB::deleteDocumentFromStorage(const Key &key, const QString &nameFIle) {
@@ -58,7 +58,11 @@ bool HardStorageDB::deleteDocumentFromStorage(const Key &key, const QString &nam
 }
 
 bool HardStorageDB::unloadDocumentFromStorage(const Key &key, const QString &nameFile, QByteArray &data) {
-    return db_->unloadDataFile(key, nameFile, data);
+    QByteArray compressData;
+    auto res = db_->unloadDataFile(key, nameFile, compressData);
+    data = qUncompress(compressData);
+
+    return res;
 }
 
 }

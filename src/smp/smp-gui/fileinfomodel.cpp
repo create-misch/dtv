@@ -54,6 +54,7 @@ QVariant FileInfoModel::headerData(int section, Qt::Orientation orientation, int
 
         case 2:
             return tr("Size file");
+
         default:
             return tr("Unknown");
         }
@@ -74,11 +75,11 @@ QModelIndex FileInfoModel::parent(const QModelIndex &index) const {
 }
 
 int FileInfoModel::rowCount(const QModelIndex &parent) const {
-    Q_UNUSED(parent)
-    if (parent.column() > 0)
-        return 0;
+    if (parent == QModelIndex()) {
+        return filesInfo_.size();
+    }
 
-    return filesInfo_.size();
+    return 0;
 }
 
 int FileInfoModel::columnCount(const QModelIndex &parent) const {

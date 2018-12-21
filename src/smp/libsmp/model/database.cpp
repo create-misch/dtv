@@ -110,14 +110,13 @@ bool Database::unloadDataFile(const Key &key, const QString &nameFile, QByteArra
 
     auto res = unloadQuery.exec();
 
-    if (!res)
+    if (!res) {
         std::cout << "Error unload file " << nameFile.toStdString() << " "
                   << unloadQuery.lastError().text().toStdString() << std::endl;
+    }
 
     res |= unloadQuery.first();
 
-    auto keyValue = unloadQuery.value(0).toInt();
-    auto nameFileValue = unloadQuery.value(1).toString();
     data = unloadQuery.value(2).toByteArray();
     return res;
 }

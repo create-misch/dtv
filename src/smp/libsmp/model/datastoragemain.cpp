@@ -73,11 +73,11 @@ void DataStorageMain::requestObject(const Key &key) {
 }
 
 void DataStorageMain::saveFile(const Key &key, const QString &nameFile, QByteArray &&dataFile) {
-    if (!hardStorage_->saveDocumentInStorage(key, nameFile, std::move(dataFile))) {
+    FileInfo fileInfo = {nameFile.section(".", 0, 0), dataFile.size(), nameFile.section(".", -1)};
+
+    if (!hardStorage_->saveDocumentInStorage(key, fileInfo.fileName, std::move(dataFile))) {
         return;
     }
-    FileInfo fileInfo = {nameFile.section(".", 0), dataFile.size(), nameFile.section(".", -1)};
-
     auto &extraData = data_map_[key].extraData;
     extraData.filesInfo.push_back(std::move(fileInfo));
     updateData(extraData);

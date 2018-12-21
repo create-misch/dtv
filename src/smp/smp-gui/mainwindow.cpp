@@ -46,7 +46,7 @@ MainWindow::MainWindow(QWidget *parent) :
         controller->requestObject(0);
         controller->requestDataForObject(0);
 
-        ui->tabWidget->addTab(treeTextView, nameProjectFile.section("/", -1));
+        ui->tabWidget->addTab(treeTextView, nameProjectFile.section("/", -1).section(".", 0, 0));
     });
 }
 
