@@ -16,6 +16,7 @@ class NodeTree;
 class Observer;
 class Node;
 class HardStorageInterface;
+class CacheStorage;
 
 using DataMap = std::unordered_map<Key, Data>;
 
@@ -43,8 +44,10 @@ private:
 
     std::unique_ptr<NodeTree> tree_;
     std::unique_ptr<HardStorageInterface> hardStorage_;
+    std::unique_ptr<CacheStorage> cache_;
     DataMap data_map_;
     Observers observers_;
+
 };
 
 }

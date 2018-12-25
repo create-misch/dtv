@@ -1,12 +1,9 @@
-#include <QDesktopServices>
-#include <QUrl>
-#include <QFileInfo>
-
 #include <model/node.h>
 #include <model/nodetree.h>
 
 #include <model/observer.h>
 #include <model/hardstoragedb.h>
+#include <model/cachestorage.h>
 
 #include <model/datastoragemain.h>
 
@@ -14,7 +11,8 @@ namespace libsmp {
 
 DataStorageMain::DataStorageMain(const QString &fileHardStorage) :
     tree_(new NodeTree),
-    hardStorage_(new HardStorageDB) {
+    hardStorage_(new HardStorageDB),
+    cache_(new CacheStorage) {
     if (!fileHardStorage.isEmpty()) {
         hardStorage_->loadStorageFromFile(fileHardStorage, data_map_, tree_.get());
     }
@@ -23,6 +21,7 @@ DataStorageMain::DataStorageMain(const QString &fileHardStorage) :
 DataStorageMain::~DataStorageMain() {
     hardStorage_->saveStorageToFile(QString("./%1.smp").arg(data_map_.at(defaultKey).name),
                                     data_map_, tree_.get());
+    cache_->clearCacheFiles();
 }
 
 void DataStorageMain::addChildObject(const Key &key) {
@@ -97,11 +96,6 @@ void DataStorageMain::deleteFile(const Key &key, const QString &nameFile) {
 }
 
 void DataStorageMain::openFile(const Key &key, const QString &nameFile) {
-    QByteArray data;
-    if (!hardStorage_->unloadDocumentFromStorage(key, nameFile, data)) {
-        return;
-    }
-
     const auto &filesInfo = data_map_.at(key).extraData.filesInfo;
     auto it = std::find_if(std::begin(filesInfo), std::end(filesInfo), [nameFile] (const FileInfo &fileInfo) {
         return fileInfo.fileName == nameFile;
@@ -112,21 +106,21 @@ void DataStorageMain::openFile(const Key &key, const QString &nameFile) {
     }
     const auto &fileInfo = (*it);
 
+    auto nameCacheFile = cache_->createNameCacheFile(fileInfo.fileName, fileInfo.type);
+    if (cache_->searchAndOpen(nameCacheFile)) {
+        return;
+    }
+
+    QByteArray data;
+    if (!hardStorage_->unloadDocumentFromStorage(key, nameFile, data)) {
+        return;
+    }
+
     if (data.size() != fileInfo.size) {
         return;
     }
 
-    QString fullNameFile = "./" + nameFile.section(".", 0, 0) + "_cache." + filesInfo.at(0).type;
-    QFile file(fullNameFile);
-    if (!file.open((QIODevice::WriteOnly))) {
-        return;
-    }
-
-    file.write(data.constData(), data.size());
-    QFileInfo fileInfoDir(file);
-
-    QDesktopServices::openUrl(QUrl(QString("file://%1").arg(fileInfoDir.absoluteFilePath()),
-                                   QUrl::TolerantMode));
+    cache_->createAndOpen(nameCacheFile, data);
 }
 
 void DataStorageMain::addObserver(Observer *observer) {
