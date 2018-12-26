@@ -1,6 +1,7 @@
 #include <QInputDialog>
 #include <QFileDialog>
 
+#include <log4app/log4app.h>
 #include <controller/factorycontroller.h>
 
 #include "treetextview.h"
@@ -8,10 +9,23 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+void InstallTranslator(TranslatorList* list, const QString& filename) {
+    QTranslator* tr(new QTranslator);
+    const bool load = tr->load(filename);
+    if (!load) {
+        log4app::Log()->warn("Can't load translation from file : %1", filename);
+        delete tr;
+        return;
+    }
+    qApp->installTranslator(tr);
+    list->push_back(tr);
+}
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow) {
     ui->setupUi(this);
+    InstallTranslator(&translatorList_, ":/translations/smp-gui_ru.qm");
 
     connect(ui->tabWidget, &QTabWidget::tabCloseRequested,[this] (int index) {
             delete ui->tabWidget->widget(index);

@@ -49,3 +49,13 @@ SOURCES += \
 FORMS += \
     mainwindow.ui \
     treetextview.ui
+
+subprojectroot_dir=$$PWD
+TRANSLATIONS += translations/smp-gui_ru.ts
+include(../../translations.pri)
+
+DISTFILES +=
+
+RESOURCES += \
+    smp-gui.qrc
+
