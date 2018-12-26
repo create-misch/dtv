@@ -30,7 +30,7 @@ bool Database::connectToDatabase(const QString &name) {
         return false;
     }
 
-    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE", name.toLatin1());
 
     db.setDatabaseName(name);
 
@@ -38,6 +38,7 @@ bool Database::connectToDatabase(const QString &name) {
          std::cout <<  db.lastError().text().toStdString() << std::endl;
          return false;
      }
+     db_ = db;
 
      return createTables();
 }
@@ -134,7 +135,7 @@ QSqlQuery Database::executeQuery(QSqlQuery &query) {
 }
 
 QSqlQuery Database::query() {
-    return QSqlQuery(QString(), QSqlDatabase::database());
+    return QSqlQuery(QString(), db_);
 }
 
 bool Database::prepare(QSqlQuery &query, const QString &str) {

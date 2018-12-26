@@ -11,16 +11,13 @@ namespace libsmp {
 
 DataStorageMain::DataStorageMain(const QString &fileHardStorage) :
     tree_(new NodeTree),
-    hardStorage_(new HardStorageDB),
-    cache_(new CacheStorage) {
-    if (!fileHardStorage.isEmpty()) {
-        hardStorage_->loadStorageFromFile(fileHardStorage, data_map_, tree_.get());
-    }
+    hardStorage_(new HardStorageDB(fileHardStorage)),
+    cache_(new CacheStorage) {    
+    hardStorage_->loadStorageFromFile(data_map_, tree_.get());
 }
 
 DataStorageMain::~DataStorageMain() {
-    hardStorage_->saveStorageToFile(QString("./%1.smp").arg(data_map_.at(defaultKey).name),
-                                    data_map_, tree_.get());
+    hardStorage_->saveStorageToFile(data_map_, tree_.get());
     cache_->clearCacheFiles();
 }
 

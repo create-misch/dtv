@@ -32,6 +32,8 @@ private:
     QSqlQuery prepare(const QString &str);
 
     bool createTables();
+
+    QSqlDatabase db_;
 };
 
 }

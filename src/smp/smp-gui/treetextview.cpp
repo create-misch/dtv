@@ -93,6 +93,10 @@ void TreeTextView::on_pushButton_openFiel_clicked() {
         return;
 
     auto index = ui->treeView_files->currentIndex();
-    auto nameFile = index.data().toString();
+    if (index == QModelIndex()) {
+        return;
+    }
+    auto indexFileName = index.sibling(index.row(), 0);
+    auto nameFile = indexFileName.data().toString();
     controller_->openFile(treeItem->key(), nameFile);
 }
