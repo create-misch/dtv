@@ -16,6 +16,7 @@ class NodeTree;
 class Observer;
 class Node;
 class HardStorageInterface;
+class CacheStorage;
 
 using DataMap = std::unordered_map<Key, Data>;
 
@@ -29,6 +30,9 @@ public:
     void setDescriptionForObject(const Key &key, const QString &description) override final;
     void requestDataForObject(const Key &key) override final;
     void requestObject(const Key &key) override final;
+    void saveFile(const Key &key, const QString &nameFile, QByteArray &&dataFile) override final;
+    void deleteFile(const Key &key, const QString &nameFile) override final;
+    void openFile(const Key &key, const QString &nameFile) override final;
 
     void addObserver(Observer* observer);
 
@@ -40,8 +44,10 @@ private:
 
     std::unique_ptr<NodeTree> tree_;
     std::unique_ptr<HardStorageInterface> hardStorage_;
+    std::unique_ptr<CacheStorage> cache_;
     DataMap data_map_;
     Observers observers_;
+
 };
 
 }

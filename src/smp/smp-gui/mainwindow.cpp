@@ -21,7 +21,9 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionCreate_Project, &QAction::triggered, this, [this] () {
         QString nameProject = QInputDialog::getText(this, tr("Create project"),
                                                     tr("Name project"));
-
+        if (nameProject.isEmpty()) {
+            return;
+        }
         auto treeTextView = new TreeTextView;
         auto controller = libsmp::FactoryController::createController(treeTextView, nameProject);
         treeTextView->setController(controller);
@@ -33,9 +35,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(ui->actionLoad_Project, &QAction::triggered, this, [this] () {
         QString nameProjectFile = QFileDialog::getOpenFileName(this,
-                                                tr("Open project file"), "./", tr("Image Files (*)"));
-
-
+                                                tr("Open project file"), "./", tr("Image Files (*.smp)"));
+        if (nameProjectFile.isEmpty()) {
+            return;
+        }
         auto treeTextView = new TreeTextView;
         auto controller = libsmp::FactoryController::createControllerFromStorage(treeTextView,
                                                                                  nameProjectFile);
@@ -43,7 +46,7 @@ MainWindow::MainWindow(QWidget *parent) :
         controller->requestObject(0);
         controller->requestDataForObject(0);
 
-        ui->tabWidget->addTab(treeTextView, nameProjectFile.section("/", -1));
+        ui->tabWidget->addTab(treeTextView, nameProjectFile.section("/", -1).section(".", 0, 0));
     });
 }
 

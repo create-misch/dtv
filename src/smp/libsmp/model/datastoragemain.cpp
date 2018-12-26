@@ -3,6 +3,7 @@
 
 #include <model/observer.h>
 #include <model/hardstoragedb.h>
+#include <model/cachestorage.h>
 
 #include <model/datastoragemain.h>
 
@@ -10,15 +11,14 @@ namespace libsmp {
 
 DataStorageMain::DataStorageMain(const QString &fileHardStorage) :
     tree_(new NodeTree),
-    hardStorage_(new HardStorageDB) {
-    if (!fileHardStorage.isEmpty()) {
-        hardStorage_->loadStorageFromFile(fileHardStorage, data_map_, tree_.get());
-    }
+    hardStorage_(new HardStorageDB(fileHardStorage)),
+    cache_(new CacheStorage) {    
+    hardStorage_->loadStorageFromFile(data_map_, tree_.get());
 }
 
 DataStorageMain::~DataStorageMain() {
-    hardStorage_->saveStorageToFile(QString("./%1").arg(data_map_.at(defaultKey).name),
-                                    data_map_, tree_.get());
+    hardStorage_->saveStorageToFile(data_map_, tree_.get());
+    cache_->clearCacheFiles();
 }
 
 void DataStorageMain::addChildObject(const Key &key) {
@@ -66,6 +66,58 @@ void DataStorageMain::requestObject(const Key &key) {
 
     if (node == nullptr) return;
     updateObject(node);
+}
+
+void DataStorageMain::saveFile(const Key &key, const QString &nameFile, QByteArray &&dataFile) {
+    FileInfo fileInfo = {nameFile.section(".", 0, 0), dataFile.size(), nameFile.section(".", -1)};
+
+    if (!hardStorage_->saveDocumentInStorage(key, fileInfo.fileName, std::move(dataFile))) {
+        return;
+    }
+    auto &extraData = data_map_[key].extraData;
+    extraData.filesInfo.push_back(std::move(fileInfo));
+    updateData(extraData);
+}
+
+void DataStorageMain::deleteFile(const Key &key, const QString &nameFile) {
+    if (!hardStorage_->deleteDocumentFromStorage(key, nameFile)) {
+        return;
+    }
+    auto &filesInfo = data_map_[key].extraData.filesInfo;
+    filesInfo.erase(std::remove_if(std::begin(filesInfo), std::end(filesInfo),
+                 [&nameFile](const FileInfo &fileInfo) {
+        return fileInfo.fileName == nameFile;
+    }), std::end(filesInfo));
+
+    updateData(data_map_.at(key).extraData);
+}
+
+void DataStorageMain::openFile(const Key &key, const QString &nameFile) {
+    const auto &filesInfo = data_map_.at(key).extraData.filesInfo;
+    auto it = std::find_if(std::begin(filesInfo), std::end(filesInfo), [nameFile] (const FileInfo &fileInfo) {
+        return fileInfo.fileName == nameFile;
+    });
+
+    if (it == std::end(filesInfo)) {
+        return;
+    }
+    const auto &fileInfo = (*it);
+
+    auto nameCacheFile = cache_->createNameCacheFile(fileInfo.fileName, fileInfo.type);
+    if (cache_->searchAndOpen(nameCacheFile)) {
+        return;
+    }
+
+    QByteArray data;
+    if (!hardStorage_->unloadDocumentFromStorage(key, nameFile, data)) {
+        return;
+    }
+
+    if (data.size() != fileInfo.size) {
+        return;
+    }
+
+    cache_->createAndOpen(nameCacheFile, data);
 }
 
 void DataStorageMain::addObserver(Observer *observer) {

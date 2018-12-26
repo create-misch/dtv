@@ -47,7 +47,8 @@ libheaders.files =                                                  \
 
 
 # Заголовочные файлы
-HEADERS  += $${libheaders.files}
+HEADERS  += $${libheaders.files} \
+    ../../include/libsmp/model/cachestorage.h
 
 
 # Исходники
@@ -57,6 +58,7 @@ SOURCES += \
     model/nodetree.cpp \
     model/datastoragemain.cpp \
     model/hardstoragedb.cpp \
-    model/database.cpp
+    model/database.cpp \
+    ../../include/libsmp/model/cachestorage.cpp
 
 DISTFILES +=
