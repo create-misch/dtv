@@ -1,4 +1,5 @@
 #include <QFileDialog>
+#include <QKeyEvent>
 
 #include <controller/controllermain.h>
 
@@ -48,10 +49,20 @@ TreeTextView::~TreeTextView() {
     delete ui;
 }
 
+void TreeTextView::keyPressEvent(QKeyEvent *event) {
+    if (event->key() == Qt::Key_Escape) {
+        ui->treeView->setCurrentIndex(QModelIndex());
+    }
+
+    event->accept();
+}
+
 void TreeTextView::on_pushButton_save_clicked() {
     auto text = ui->textBrowser->toPlainText();
     TreeItem* treeItem = indexToItem(ui->treeView->currentIndex());
-    if (!treeItem) return;
+    if (!treeItem) {
+        return;
+    }
     controller_->setDescriptionForObject(treeItem->key(), text);
 }
 
@@ -67,8 +78,9 @@ TreeItem *TreeTextView::currentTreeItem() {
 }
 
 void TreeTextView::on_pushButton_addFile_clicked() {
-    if (!toTreeItem(ui->treeView->currentIndex()))
+    if (!toTreeItem(ui->treeView->currentIndex())) {
         return;
+    }
     QString nameDocument = QFileDialog::getOpenFileName(this,
                                             tr("Open project file"), "./", tr("Files (*.doc *.pdf)"));
     QFile file(nameDocument);
@@ -79,8 +91,9 @@ void TreeTextView::on_pushButton_addFile_clicked() {
 
 void TreeTextView::on_pushButton_deleteFile_clicked() {
     auto treeItem = toTreeItem(ui->treeView->currentIndex());
-    if (!treeItem)
+    if (!treeItem) {
         return;
+    }
 
     auto index = ui->treeView_files->currentIndex();
     auto nameFile = index.data().toString();
@@ -99,4 +112,10 @@ void TreeTextView::on_pushButton_openFiel_clicked() {
     auto indexFileName = index.sibling(index.row(), 0);
     auto nameFile = indexFileName.data().toString();
     controller_->openFile(treeItem->key(), nameFile);
+}
+
+void TreeTextView::on_pushButton_removeElement_clicked() {
+    TreeItem* treeItem = indexToItem(ui->treeView->currentIndex());
+    libsmp::Key key = treeItem == nullptr ? 0 :  treeItem->key();
+    controller_->deleteObject(key);
 }

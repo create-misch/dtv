@@ -31,6 +31,16 @@ void DataStorageMain::addChildObject(const Key &key) {
         updateObject(node);
 }
 
+void DataStorageMain::deleteObject(const Key &key) {
+    auto node = tree_->deleteNode(key);
+    if (node == nullptr) {
+        return;
+    }
+
+    data_map_.erase(key);
+    updateObject(node);
+}
+
 void DataStorageMain::setNameForObject(const Key &key, const QString &name) {
     if (data_map_.count(key) == 0)
         return;

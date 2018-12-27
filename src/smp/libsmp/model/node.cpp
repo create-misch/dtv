@@ -8,6 +8,7 @@ Node::Node(const Key &key, NodeInterface *parent) :
 
 Node::~Node() {
     qDeleteAll(childs_);
+    childs_.clear();
 }
 
 void Node::setKey(const Key &key) {
@@ -30,6 +31,16 @@ void Node::addChild(NodeInterface *node) {
     if (node->parent() == nullptr)
         node->setParent(this);
     childs_.push_back(node);
+}
+
+bool Node::deleteChild(NodeInterface *node) {
+    auto it_remove = std::remove(std::begin(childs_), std::end(childs_), node);
+    if (it_remove == std::end(childs_)) {
+        return false;
+    }
+    qDeleteAll(it_remove + 1, std::end(childs_));
+    childs_.erase(it_remove, std::end(childs_));
+    return  true;
 }
 
 ChildNodes Node::childs() const {

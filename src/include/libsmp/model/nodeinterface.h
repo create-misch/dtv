@@ -24,6 +24,7 @@ public:
     virtual NodeInterface *parent() const = 0;
 
     virtual void addChild(NodeInterface *node) = 0;
+    virtual bool deleteChild(NodeInterface *node) = 0;
     virtual ChildNodes childs() const = 0;
     virtual ChildNodes &childs() = 0;
 

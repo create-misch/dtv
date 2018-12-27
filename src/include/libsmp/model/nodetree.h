@@ -19,6 +19,7 @@ public:
     Node* getNodeWithKey(const Key &key);
 
     void insertNode(const Key &key, const Key &keyParent);
+    Node *deleteNode(const Key &key);
 
     using Visitor = std::function<void (const NodeInterface *node)>;
 

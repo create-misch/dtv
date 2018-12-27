@@ -49,11 +49,25 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_addElement">
-         <property name="text">
-          <string>Add  element</string>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <property name="topMargin">
+          <number>0</number>
          </property>
-        </widget>
+         <item>
+          <widget class="QPushButton" name="pushButton_addElement">
+           <property name="text">
+            <string>Add  element</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_removeElement">
+           <property name="text">
+            <string>Remove element</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
       </layout>
      </item>

@@ -11,6 +11,10 @@ void ControllerMain::addChildObject(const Key &key) {
     storage_->addChildObject(key);
 }
 
+void ControllerMain::deleteObject(const Key &key) {
+    storage_->deleteObject(key);
+}
+
 void ControllerMain::setNameForObject(const Key &key, const QString &name) {
     storage_->setNameForObject(key, name);
 }

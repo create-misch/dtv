@@ -61,6 +61,20 @@ int TreeItem::row() const {
     return 0;
 }
 
+int TreeItem::rowForDelete(const NodeInterface *node) {
+    if (node->childs().size() == 0) {
+        return 0;
+    }
+
+    for (int i = 0; i < node->childs().size(); i++) {
+        if (node->childs().at(i)->key() != childs().at(i)->key()) {
+            return i;
+        }
+    }
+
+    return node->childs().size() - 1;
+}
+
 void TreeItem::setName(const QString &name) {
     name_ = name;
 }

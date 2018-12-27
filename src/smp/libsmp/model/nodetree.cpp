@@ -37,6 +37,18 @@ void NodeTree::insertNode(const Key &key, const Key &keyParent) {
     node->addChild(new Node(key));
 }
 
+Node *NodeTree::deleteNode(const Key &key) {
+    auto deleteNode = getNodeWithKey(key);
+    auto parent = deleteNode == nullptr ? nullptr : deleteNode->parent();
+
+    if (!parent) {
+        return nullptr;
+    }
+    parent->deleteChild(deleteNode);
+
+    return dynamic_cast<Node *>(parent);
+}
+
 void NodeTree::recursiveVisitor(NodeInterface *root, Visitor visitor) const {
     if (!root) return;
     visitor(root);

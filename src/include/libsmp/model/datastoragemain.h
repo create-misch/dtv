@@ -26,6 +26,7 @@ public:
     ~DataStorageMain();
 
     void addChildObject(const Key &key) override final;
+    void deleteObject(const Key &key) override final;
     void setNameForObject(const Key &key, const QString &name) override final;
     void setDescriptionForObject(const Key &key, const QString &description) override final;
     void requestDataForObject(const Key &key) override final;

@@ -94,32 +94,37 @@
         <translation type="unfinished">Сохранить</translation>
     </message>
     <message>
-        <location filename="../treetextview.ui" line="54"/>
+        <location filename="../treetextview.ui" line="59"/>
         <source>Add  element</source>
         <translation type="unfinished">Добавить элемент</translation>
     </message>
     <message>
-        <location filename="../treetextview.ui" line="79"/>
+        <location filename="../treetextview.ui" line="66"/>
+        <source>Remove element</source>
+        <translation type="unfinished">Удалить элемент</translation>
+    </message>
+    <message>
+        <location filename="../treetextview.ui" line="93"/>
         <source>Add file</source>
         <translation type="unfinished">Добавить файл</translation>
     </message>
     <message>
-        <location filename="../treetextview.ui" line="86"/>
+        <location filename="../treetextview.ui" line="100"/>
         <source>Delete file</source>
         <translation type="unfinished">Удалить файл</translation>
     </message>
     <message>
-        <location filename="../treetextview.ui" line="93"/>
+        <location filename="../treetextview.ui" line="107"/>
         <source>Open file</source>
         <translation type="unfinished">Открыть файл</translation>
     </message>
     <message>
-        <location filename="../treetextview.cpp" line="73"/>
+        <location filename="../treetextview.cpp" line="85"/>
         <source>Open project file</source>
         <translation type="unfinished">Открыть файл проекта</translation>
     </message>
     <message>
-        <location filename="../treetextview.cpp" line="73"/>
+        <location filename="../treetextview.cpp" line="85"/>
         <source>Files (*.doc *.pdf)</source>
         <translation type="unfinished"></translation>
     </message>

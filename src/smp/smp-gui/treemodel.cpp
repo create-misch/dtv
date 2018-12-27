@@ -37,9 +37,20 @@ void TreeModel::setItem(const Node &item, const QModelIndex &currentIndex, const
 
     auto treeItem = toTreeItem(currentIndex);
     /// если элемент есть и нужно просто заменить данные
-    if (treeItem != nullptr && treeItem->key() == item.key()) {
+    if (treeItem != nullptr) {
+        if (treeItem->key() == item.key()) {
             treeItem->setName(name);
             return;
+        }
+        auto parent = dynamic_cast<TreeItem *>(treeItem->parent());
+        if (parent->key() == item.key() && parent->childs().size() != item.childs().size()) {
+            auto index = createIndex(parent->row(), 0, parent);
+            auto row = parent->rowForDelete(&item);
+            beginRemoveRows(index, row, row);
+            parent->deleteChild(parent->child(row));
+            endRemoveRows();
+            return;
+        }
     }
 
     if (treeItem == nullptr) {
@@ -50,7 +61,7 @@ void TreeModel::setItem(const Node &item, const QModelIndex &currentIndex, const
     if (node != nullptr) {
         node->setName(name);
         return;
-    }
+    }    
 
     QModelIndex index;
     index = currentIndex.isValid() == false ?
