@@ -61,4 +61,12 @@ SOURCES += \
     model/database.cpp \
     ../../include/libsmp/model/cachestorage.cpp
 
+subprojectroot_dir=$$PWD
+TRANSLATIONS += translations/libsmp_ru.ts
+include(../../translations.pri)
+
+
 DISTFILES +=
+
+RESOURCES += \
+    libsmp.qrc

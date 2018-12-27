@@ -26,6 +26,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow) {
     ui->setupUi(this);
     InstallTranslator(&translatorList_, ":/translations/smp-gui_ru.qm");
+    InstallTranslator(&translatorList_, ":/translations/libsmp_ru.qm");
+
+    ui->actionCreate_Project->setText(tr("Create project"));
+    ui->actionLoad_Project->setText(tr("Load project"));
 
     connect(ui->tabWidget, &QTabWidget::tabCloseRequested,[this] (int index) {
             delete ui->tabWidget->widget(index);

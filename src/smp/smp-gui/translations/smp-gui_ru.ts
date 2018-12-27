@@ -37,32 +37,38 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="62"/>
-        <source>Create Project</source>
-        <translation type="unfinished">Создать проект</translation>
-    </message>
-    <message>
         <location filename="../mainwindow.ui" line="67"/>
-        <source>Load Project</source>
-        <translation type="unfinished">Загрузить проект</translation>
+        <location filename="../mainwindow.cpp" line="32"/>
+        <source>Load project</source>
+        <translation>Загрузить проект</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="22"/>
+        <source>Create Project</source>
+        <translation type="obsolete">Создать проект</translation>
+    </message>
+    <message>
+        <source>Load Project</source>
+        <translation type="obsolete">Загрузить проект</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="62"/>
+        <location filename="../mainwindow.cpp" line="31"/>
+        <location filename="../mainwindow.cpp" line="40"/>
         <source>Create project</source>
         <translation type="unfinished">Создать проект</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="23"/>
+        <location filename="../mainwindow.cpp" line="41"/>
         <source>Name project</source>
         <translation type="unfinished">Имя проекта</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="38"/>
+        <location filename="../mainwindow.cpp" line="56"/>
         <source>Open project file</source>
         <translation type="unfinished">Открыть файл проекта</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="38"/>
+        <location filename="../mainwindow.cpp" line="56"/>
         <source>Image Files (*.smp)</source>
         <translation type="unfinished">Тип файла (*.smp)</translation>
     </message>
