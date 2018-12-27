@@ -18,12 +18,12 @@ struct FileInfo {
 
 using FilesInfo = QList<FileInfo>;
 struct ExtraData {
-    QString description = "Description";
+    QString description = QObject::tr("Description");
     FilesInfo filesInfo;
 };
 
 struct Data {
-    QString name = "New Object";
+    QString name = QObject::tr("New Object");
     ExtraData extraData;
 };
 

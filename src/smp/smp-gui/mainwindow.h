@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QMainWindow>
+#include <QTranslator>
 
 #include <global.h>
 #include <model/observer.h>
@@ -8,6 +9,8 @@
 namespace Ui {
 class MainWindow;
 }
+
+using TranslatorList = QVector<QTranslator*>;
 
 class MainWindow : public QMainWindow {
     Q_OBJECT
@@ -17,5 +20,6 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    TranslatorList translatorList_;
 };
 

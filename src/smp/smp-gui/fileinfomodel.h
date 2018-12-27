@@ -5,6 +5,7 @@
 #include <model/data.h>
 
 class FileInfoModel : public QAbstractItemModel {
+    Q_OBJECT
 public:
     FileInfoModel(QObject *parent = nullptr);
 

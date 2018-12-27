@@ -59,12 +59,12 @@
   </widget>
   <action name="actionCreate_Project">
    <property name="text">
-    <string>Create Project</string>
+    <string>Create project</string>
    </property>
   </action>
   <action name="actionLoad_Project">
    <property name="text">
-    <string>Load Project</string>
+    <string>Load project</string>
    </property>
   </action>
  </widget>
