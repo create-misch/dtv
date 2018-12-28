@@ -15,7 +15,6 @@ class HardStorageInterface {
 public:
     virtual ~HardStorageInterface() {}
     virtual void saveStorageToFile(const std::unordered_map<Key, Data> &dataMap, const NodeTree *nodeTree) = 0;
-
     virtual void loadStorageFromFile(std::unordered_map<Key, Data> &dataMap, NodeTree *nodeTree) = 0;
 
     virtual bool saveDocumentInStorage(const Key &key, const QString &nameFile, QByteArray &&data) = 0;

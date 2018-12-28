@@ -26,6 +26,7 @@ HardStorageDB::~HardStorageDB() {}
 
 void HardStorageDB::saveStorageToFile(const std::unordered_map<Key, Data> &dataMap,
                                       const NodeTree *nodeTree) {
+    db_->clearData();
     auto visitorSave = [dataMap, this] (const NodeInterface *node) {
         auto parent_key = node->parent() == nullptr ? -1 : node->parent()->key();
         db_->saveData(node->key(), parent_key, pack(dataMap.at(node->key())));

@@ -27,8 +27,9 @@ void DataStorageMain::addChildObject(const Key &key) {
     data_map_[keyNode] = Data{};
 
     auto node = tree_->getNodeWithKey(keyNode);
-    if (node != nullptr)
+    if (node != nullptr) {
         updateObject(node);
+    }
 }
 
 void DataStorageMain::deleteObject(const Key &key) {
@@ -37,21 +38,28 @@ void DataStorageMain::deleteObject(const Key &key) {
         return;
     }
 
+    auto filesInfo = data_map_.at(key).extraData.filesInfo;
+    for (auto fileInfo : filesInfo) {
+        hardStorage_->deleteDocumentFromStorage(key, fileInfo.fileName);
+    }
     data_map_.erase(key);
-    updateObject(node);
+    requestObject(node->key());
+    updateData(data_map_.at(defaultKey).extraData);
 }
 
 void DataStorageMain::setNameForObject(const Key &key, const QString &name) {
-    if (data_map_.count(key) == 0)
+    if (data_map_.count(key) == 0) {
         return;
+    }
     auto &data = data_map_[key];
     data.name = name;
     updateObject(tree_->getNodeWithKey(key));
 }
 
 void DataStorageMain::setDescriptionForObject(const Key &key, const QString &description) {
-    if (data_map_.count(key) == 0)
+    if (data_map_.count(key) == 0) {
         return;
+    }
     auto &data = data_map_[key].extraData;
     data.description = description;
     updateData(data);
@@ -59,7 +67,9 @@ void DataStorageMain::setDescriptionForObject(const Key &key, const QString &des
 
 void DataStorageMain::requestDataForObject(const Key &key) {
     auto it = data_map_.find(key);
-    if (it == std::end(data_map_)) return;
+    if (it == std::end(data_map_)) {
+        return;
+    }
 
     updateData((*it).second.extraData);
 }

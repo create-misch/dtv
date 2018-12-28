@@ -74,6 +74,17 @@ QList<QVariantList> Database::loadData() {
     return result;
 }
 
+bool Database::clearData() {
+    auto deleteQuery = prepare("DELETE FROM smp");
+    auto res =  deleteQuery.exec();
+
+    if (!res) {
+        std::cout << "Error clear table " << deleteQuery.lastError().text().toStdString() << std::endl;
+    }
+
+    return res;
+}
+
 bool Database::saveDataFile(const Key &key, const QString &nameFile, QByteArray &&data) {
     auto saveQuery = prepare("INSERT OR REPLACE INTO smp_files (key, name, file_data, version)"
                              " VALUES ((:key), (:name), (:file_data), (:version))");

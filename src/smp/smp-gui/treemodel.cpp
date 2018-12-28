@@ -18,12 +18,16 @@ TreeModel::~TreeModel() {
 }
 
 int TreeModel::columnCount(const QModelIndex &parent) const {
+    if (!isValid()) {
+        return 0;
+    }
+
     if (parent.isValid()) {
         auto item = toTreeItem(parent.internalPointer());
         return item->columnCount();
-    }
-    else
+    } else {
         return rootItem->columnCount();
+    }
 }
 
 void TreeModel::setItem(const Node &item, const QModelIndex &currentIndex, const QString name) {
@@ -82,7 +86,15 @@ TreeItem *TreeModel::getRootItem() {
     return rootItem;
 }
 
+bool TreeModel::isValid() const {
+    return rootItem != nullptr;
+}
+
 QVariant TreeModel::data(const QModelIndex &index, int role) const {
+    if (!isValid()) {
+        return QVariant();
+    }
+
     if (!index.isValid())
         return QVariant();
 
@@ -143,6 +155,10 @@ const {
 }
 
 QModelIndex TreeModel::parent(const QModelIndex &index) const {
+    if (!isValid()) {
+        return QModelIndex();
+    }
+
     if (!index.isValid())
         return QModelIndex();
 
@@ -156,6 +172,9 @@ QModelIndex TreeModel::parent(const QModelIndex &index) const {
 }
 
 int TreeModel::rowCount(const QModelIndex &parent) const {
+    if (!isValid()) {
+        return 0;
+    }
     TreeItem *parentItem;
     if (parent.column() > 0)
         return 0;

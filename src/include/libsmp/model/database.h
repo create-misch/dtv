@@ -17,6 +17,7 @@ public:
 
     bool saveData(const Key &key, const Key &parentKey, const QByteArray &data);
     QList<QVariantList> loadData();
+    bool clearData();
 
     bool saveDataFile(const Key &key, const QString &nameFile, QByteArray &&data);
     bool deleteDataFile(const Key &key, const QString &nameFile);

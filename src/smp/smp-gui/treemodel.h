@@ -43,6 +43,8 @@ public:
     TreeItem *getRootItem();
 
 private:
+    bool isValid() const;
+
     TreeItem* rootItem = nullptr;
     libsmp::sp<libsmp::ControllerInterface> controller_;
 };
