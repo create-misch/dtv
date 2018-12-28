@@ -68,6 +68,10 @@ bool CacheStorage::openDocument(const QString nameFile) {
         log4app::Log()->info("Открытие документа. Файл %1 не существует!!", fullFileName);
     }
 
+#ifdef __unix
+#else
+    fullFileName.prepend("/");
+#endif
     return QDesktopServices::openUrl(QUrl(QString("file://%1").arg(fullFileName),
                                    QUrl::TolerantMode));
 }

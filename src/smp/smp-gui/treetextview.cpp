@@ -82,7 +82,7 @@ void TreeTextView::on_pushButton_addFile_clicked() {
         return;
     }
     QString nameDocument = QFileDialog::getOpenFileName(this,
-                                            tr("Open project file"), "./", tr("Files (*.doc *.pdf)"));
+                                            tr("Open project file"), "./", tr("Files (*.doc *.pdf *.docx)"));
     QFile file(nameDocument);
     file.open(QIODevice::ReadOnly);
     auto dataFile = file.readAll();
