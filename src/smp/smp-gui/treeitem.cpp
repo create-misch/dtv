@@ -72,7 +72,7 @@ int TreeItem::rowForDelete(const NodeInterface *node) {
         }
     }
 
-    return node->childs().size() - 1;
+    return childs().size() - 1;
 }
 
 void TreeItem::setName(const QString &name) {
