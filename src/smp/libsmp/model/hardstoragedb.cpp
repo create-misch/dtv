@@ -18,7 +18,7 @@ HardStorageDB::HardStorageDB(const QString &dbName) :
     fileDb = dbName.endsWith(".smp") ? dbName : QString("%1.smp").arg(dbName);
 
     if (!db_->connectToDatabase(fileDb)) {
-        log4app::Log()->error("База дынных %1 не открыта!!", fileDb);
+        log4app::Log()->error("Data base %1 don't open!!", fileDb);
     }
 }
 
