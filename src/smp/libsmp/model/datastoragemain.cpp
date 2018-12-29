@@ -1,3 +1,5 @@
+#include <log4app/log4app.h>
+
 #include <model/node.h>
 #include <model/nodetree.h>
 
@@ -22,6 +24,7 @@ DataStorageMain::~DataStorageMain() {
 }
 
 void DataStorageMain::addChildObject(const Key &key) {
+    log4app::Log()->trace(Q_FUNC_INFO);
     auto keyNode = tree_->addChildForKey(key);
 
     data_map_[keyNode] = Data{};
@@ -33,6 +36,7 @@ void DataStorageMain::addChildObject(const Key &key) {
 }
 
 void DataStorageMain::deleteObject(const Key &key) {
+    log4app::Log()->trace(Q_FUNC_INFO);
     auto node = tree_->deleteNode(key);
     if (node == nullptr) {
         return;
@@ -48,7 +52,9 @@ void DataStorageMain::deleteObject(const Key &key) {
 }
 
 void DataStorageMain::setNameForObject(const Key &key, const QString &name) {
+    log4app::Log()->trace(Q_FUNC_INFO);
     if (data_map_.count(key) == 0) {
+        log4app::Log()->error("Data storage(set name). Don't found element with key %1", key);
         return;
     }
     auto &data = data_map_[key];
@@ -57,7 +63,9 @@ void DataStorageMain::setNameForObject(const Key &key, const QString &name) {
 }
 
 void DataStorageMain::setDescriptionForObject(const Key &key, const QString &description) {
+    log4app::Log()->trace(Q_FUNC_INFO);
     if (data_map_.count(key) == 0) {
+        log4app::Log()->error("Data storage(set description). Don't found element with key %1", key);
         return;
     }
     auto &data = data_map_[key].extraData;
@@ -66,8 +74,10 @@ void DataStorageMain::setDescriptionForObject(const Key &key, const QString &des
 }
 
 void DataStorageMain::requestDataForObject(const Key &key) {
+    log4app::Log()->trace(Q_FUNC_INFO);
     auto it = data_map_.find(key);
     if (it == std::end(data_map_)) {
+        log4app::Log()->error("Data storage(request object). Don't found element with key %1", key);
         return;
     }
 
@@ -75,6 +85,7 @@ void DataStorageMain::requestDataForObject(const Key &key) {
 }
 
 void DataStorageMain::requestObject(const Key &key) {
+    log4app::Log()->trace(Q_FUNC_INFO);
     if (key == defaultKey) {
         auto visitor = [this](const NodeInterface *node) {
             updateObject(dynamic_cast<const Node *>(node));
@@ -89,9 +100,11 @@ void DataStorageMain::requestObject(const Key &key) {
 }
 
 void DataStorageMain::saveFile(const Key &key, const QString &nameFile, QByteArray &&dataFile) {
+    log4app::Log()->trace(Q_FUNC_INFO);
     FileInfo fileInfo = {nameFile.section(".", 0, 0), dataFile.size(), nameFile.section(".", -1)};
 
     if (!hardStorage_->saveDocumentInStorage(key, fileInfo.fileName, std::move(dataFile))) {
+        log4app::Log()->error("Data storage(save file). Error save documet in storage!");
         return;
     }
     auto &extraData = data_map_[key].extraData;
@@ -100,7 +113,9 @@ void DataStorageMain::saveFile(const Key &key, const QString &nameFile, QByteArr
 }
 
 void DataStorageMain::deleteFile(const Key &key, const QString &nameFile) {
+    log4app::Log()->trace(Q_FUNC_INFO);
     if (!hardStorage_->deleteDocumentFromStorage(key, nameFile)) {
+        log4app::Log()->error("Data storage(delete file). Error delete documet from storage!");
         return;
     }
     auto &filesInfo = data_map_[key].extraData.filesInfo;
@@ -113,12 +128,14 @@ void DataStorageMain::deleteFile(const Key &key, const QString &nameFile) {
 }
 
 void DataStorageMain::openFile(const Key &key, const QString &nameFile) {
+    log4app::Log()->trace(Q_FUNC_INFO);
     const auto &filesInfo = data_map_.at(key).extraData.filesInfo;
     auto it = std::find_if(std::begin(filesInfo), std::end(filesInfo), [nameFile] (const FileInfo &fileInfo) {
         return fileInfo.fileName == nameFile;
     });
 
     if (it == std::end(filesInfo)) {
+        log4app::Log()->error("Data storage(open file). Document don't found in data storage!");
         return;
     }
     const auto &fileInfo = (*it);
@@ -130,10 +147,12 @@ void DataStorageMain::openFile(const Key &key, const QString &nameFile) {
 
     QByteArray data;
     if (!hardStorage_->unloadDocumentFromStorage(key, nameFile, data)) {
+        log4app::Log()->error("Data storage(open file). Document don't unload from had storage!");
         return;
     }
 
     if (data.size() != fileInfo.size) {
+        log4app::Log()->error("Data storage(open file). Document no correct size!");
         return;
     }
 
@@ -141,16 +160,19 @@ void DataStorageMain::openFile(const Key &key, const QString &nameFile) {
 }
 
 void DataStorageMain::addObserver(Observer *observer) {
+    log4app::Log()->trace(Q_FUNC_INFO);
     observers_.push_back(observer);
 }
 
 void DataStorageMain::updateObject(const Node *node) {
+    log4app::Log()->trace(Q_FUNC_INFO);
     for (auto & observer : observers_) {
         observer->updateRequestedObject(*node, data_map_.at(node->key()).name);
     }
 }
 
 void DataStorageMain::updateData(const ExtraData &data) {
+    log4app::Log()->trace(Q_FUNC_INFO);
     for (auto &observer : observers_) {
         observer->updateData(data);
     }

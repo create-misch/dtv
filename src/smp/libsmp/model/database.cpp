@@ -7,6 +7,8 @@
 
 #include <QVariant>
 
+#include <log4app/log4app.h>
+
 #include <model/database.h>
 
 namespace  {
@@ -26,7 +28,7 @@ Database::Database() {}
 
 bool Database::connectToDatabase(const QString &name) {    
     if (!QSqlDatabase::drivers().contains("QSQLITE")) {
-        std::cout << "Not found SQLITE Driver!" << std::endl;
+        log4app::Log()->error("Not found SQLITE Driver!");
         return false;
     }
 
@@ -35,7 +37,7 @@ bool Database::connectToDatabase(const QString &name) {
     db.setDatabaseName(name);
 
      if (!db.open()) {
-         std::cout <<  db.lastError().text().toStdString() << std::endl;
+         log4app::Log()->error("Data base error : %1", db.lastError().text());
          return false;
      }
      db_ = db;
@@ -52,16 +54,20 @@ bool Database::saveData(const Key &key, const Key &parentKey, const QByteArray &
     saveQuery.bindValue(":version", version_storage);
     auto res = saveQuery.exec();
 
-    if (!res)
-        std::cout << "Error save table " << saveQuery.lastError().text().toStdString() << std::endl;
+    if (!res) {
+        log4app::Log()->error("Data base error(save table) : %1",
+                              saveQuery.lastError().text());
+    }
     return res;
 }
 
 QList<QVariantList> Database::loadData() {
     auto result = QList<QVariantList>();
     auto loadQuery = prepare("SELECT * FROM smp");
-    if (!loadQuery.exec())
+    if (!loadQuery.exec()) {
+        log4app::Log()->error("Data base error(load data) : %1",loadQuery.lastError().text());
         return result;
+    }
 
     while(loadQuery.next()) {
         auto list =  QVariantList();
@@ -79,7 +85,8 @@ bool Database::clearData() {
     auto res =  deleteQuery.exec();
 
     if (!res) {
-        std::cout << "Error clear table " << deleteQuery.lastError().text().toStdString() << std::endl;
+        log4app::Log()->error("Data base error(clear table) : %1",
+                              deleteQuery.lastError().text());
     }
 
     return res;
@@ -94,9 +101,10 @@ bool Database::saveDataFile(const Key &key, const QString &nameFile, QByteArray 
     saveQuery.bindValue(":version", version_storage);
     auto res = saveQuery.exec();
 
-    if (!res)
-        std::cout << "Error save file " << nameFile.toStdString() << " "
-                  << saveQuery.lastError().text().toStdString() << std::endl;
+    if (!res) {
+        log4app::Log()->error("Data base error(save file %1) : %2", nameFile,
+                              saveQuery.lastError().text());
+    }
     return res;
 }
 
@@ -108,9 +116,10 @@ bool Database::deleteDataFile(const Key &key, const QString &nameFile) {
 
     auto res = deleteQuery.exec();
 
-    if (!res)
-        std::cout << "Error delete file " << nameFile.toStdString() << " "
-                  << deleteQuery.lastError().text().toStdString() << std::endl;
+    if (!res) {
+        log4app::Log()->error("Data base error(delete file %1) : %2 ", nameFile,
+                              deleteQuery.lastError().text());
+    }
     return res;
 }
 
@@ -123,8 +132,8 @@ bool Database::unloadDataFile(const Key &key, const QString &nameFile, QByteArra
     auto res = unloadQuery.exec();
 
     if (!res) {
-        std::cout << "Error unload file " << nameFile.toStdString() << " "
-                  << unloadQuery.lastError().text().toStdString() << std::endl;
+        log4app::Log()->error("Data base error (unload file %1) : %2", nameFile,
+                  unloadQuery.lastError().text());
     }
 
     res |= unloadQuery.first();
@@ -170,8 +179,8 @@ bool Database::createTables() {
 
     auto res = createTable.exec();
     if (!res) {
-        std::cout << "Error create table " << nameTableSmp << " "
-                  << createTable.lastError().text().toStdString() << std::endl;
+        log4app::Log()->error("Data base error (create table %1) : %2", nameTableSmp,
+                  createTable.lastError().text());
     }
 
     createString = QString("CREATE TABLE IF NOT EXISTS %1 ("
@@ -185,8 +194,8 @@ bool Database::createTables() {
     auto resFiles = createTable.exec();
 
     if (!resFiles) {
-        std::cout << "Error create table " << nameTableSmpFiles << " "
-                  << createTable.lastError().text().toStdString() << std::endl;
+        log4app::Log()->error("Data base error (create table %1) : %2", nameTableSmp,
+                  createTable.lastError().text());
     }
 
     return res && resFiles;
