@@ -9,12 +9,19 @@ find_package(Qt5 COMPONENTS Core)
 if (NOT 3RDPARTY_DIR)
     set(3RDPARTY_DIR "../3rdparty")
 endif()
-set(LOG4QT_DIR "${3RDPARTY_DIR}/log4qt")
+set(LOG4QT_DIR "${3RDPARTY_DIR}/log4qt/")
 
 aux_source_directory(./ SRC_LIST)
 aux_source_directory(${LOG4QT_DIR} SRC_LOG4QT_LIST)
+aux_source_directory(${LOG4QT_DIR}/helpers SRC_LOG4QT_LIST)
+aux_source_directory(${LOG4QT_DIR}/spi SRC_LOG4QT_LIST)
+aux_source_directory(${LOG4QT_DIR}/varia SRC_LOG4QT_LIST)
 
-add_library(${PROJECT_NAME} ${SRC_LIST} ${SRC_LOG4QT_LIST})
+file(GLOB HEADERS "${LOG4QT_DIR}/*.h" "${LOG4QT_DIR}/helpers/*.h" "${LOG4QT_DIR}/spi/*.h" "${LOG4QT_DIR}/varia/*.h")
 
-target_include_directories(${PROJECT_NAME} PRIVATE ${3RDPARTY_DIR})
+add_library(${PROJECT_NAME} ${SRC_LIST} ${SRC_LOG4QT_LIST} ${HEADERS})
+
+target_include_directories(${PROJECT_NAME} PUBLIC ${3RDPARTY_DIR})
+target_include_directories(${PROJECT_NAME} PUBLIC ./)
+
 target_link_libraries(${PROJECT_NAME} Qt5::Core)

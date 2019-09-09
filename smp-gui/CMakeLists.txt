@@ -14,6 +14,3 @@ file(GLOB HEADERS "./*.h")
 add_executable(${PROJECT_NAME} ${SRC_LIST} ${FORMS} ${HEADERS})
 
 target_link_libraries(${PROJECT_NAME} Qt5::Widgets libsmp)
-
-target_include_directories(${PROJECT_NAME} PRIVATE ${libsmp_INCLUDES})
-

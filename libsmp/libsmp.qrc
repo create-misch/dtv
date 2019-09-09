@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>translations/libsmp_ru.qm</file>
+        <file>translations/libsmp_ru.ts</file>
+    </qresource>
+</RCC>

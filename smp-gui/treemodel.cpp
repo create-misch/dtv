@@ -18,31 +18,66 @@ TreeModel::~TreeModel() {
 }
 
 int TreeModel::columnCount(const QModelIndex &parent) const {
+    if (!isValid()) {
+        return 0;
+    }
+
     if (parent.isValid()) {
         auto item = toTreeItem(parent.internalPointer());
         return item->columnCount();
-    }
-    else
+    } else {
         return rootItem->columnCount();
+    }
 }
 
-void TreeModel::setItem(const Node &item, const QModelIndex &currentIndex) {
+void TreeModel::setItem(const Node &item, const QModelIndex &currentIndex, const QString name) {
     if (item.parent() == nullptr) {
         beginResetModel();
         delete rootItem;
-        rootItem = new TreeItem(item);
+        rootItem = new TreeItem(item, name);
         endResetModel();
         return;
     }
 
     auto treeItem = toTreeItem(currentIndex);
-    if (treeItem == nullptr) {
-        treeItem = rootItem;
+    /// если элемент есть и нужно просто заменить данные
+    if (treeItem != nullptr) {
+        if (treeItem->key() == item.key()) {
+            treeItem->setName(name);
+            return;
+        }
+        auto parent = dynamic_cast<TreeItem *>(treeItem->parent());
+        if (parent->key() == item.key() && parent->childs().size() != item.childs().size()) {
+            auto index = createIndex(parent->row(), 0, parent);
+            auto row = parent->rowForDelete(&item);
+            beginRemoveRows(index, row, row);
+            parent->deleteChild(parent->child(row));
+            endRemoveRows();
+            return;
+        }
     }
 
-    if (treeItem->key() == item.parent()->key()){
-        beginInsertRows(currentIndex, treeItem->childCount(), treeItem->childCount());
-        treeItem->addChild(new TreeItem(item));
+    if (treeItem == nullptr) {
+        treeItem = toTreeItem(nodeWithKey(rootItem, item.parent()->key()));
+    }
+
+    auto node = treeItem->childWithKey(item.key());
+    if (node != nullptr) {
+        node->setName(name);
+        return;
+    }    
+
+    QModelIndex index;
+    index = currentIndex.isValid() == false ?
+                treeItem->parent() == nullptr ? QModelIndex()
+                                              : createIndex(treeItem->row(), 0, treeItem)
+                                              : currentIndex;
+
+    if (treeItem == nullptr) return;
+
+    if (treeItem->key() == item.parent()->key()) {
+        beginInsertRows(index, treeItem->childCount(), treeItem->childCount());
+        treeItem->addChild(new TreeItem(item, name));
         endInsertRows();
     };
 }
@@ -51,7 +86,15 @@ TreeItem *TreeModel::getRootItem() {
     return rootItem;
 }
 
+bool TreeModel::isValid() const {
+    return rootItem != nullptr;
+}
+
 QVariant TreeModel::data(const QModelIndex &index, int role) const {
+    if (!isValid()) {
+        return QVariant();
+    }
+
     if (!index.isValid())
         return QVariant();
 
@@ -112,6 +155,10 @@ const {
 }
 
 QModelIndex TreeModel::parent(const QModelIndex &index) const {
+    if (!isValid()) {
+        return QModelIndex();
+    }
+
     if (!index.isValid())
         return QModelIndex();
 
@@ -125,6 +172,9 @@ QModelIndex TreeModel::parent(const QModelIndex &index) const {
 }
 
 int TreeModel::rowCount(const QModelIndex &parent) const {
+    if (!isValid()) {
+        return 0;
+    }
     TreeItem *parentItem;
     if (parent.column() > 0)
         return 0;

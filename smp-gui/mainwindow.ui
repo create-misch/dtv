@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>SMP</string>
   </property>
   <property name="toolButtonStyle">
    <enum>Qt::ToolButtonTextOnly</enum>
@@ -55,10 +55,16 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionCreate_Project"/>
+   <addaction name="actionLoad_Project"/>
   </widget>
   <action name="actionCreate_Project">
    <property name="text">
-    <string>Create Project</string>
+    <string>Create project</string>
+   </property>
+  </action>
+  <action name="actionLoad_Project">
+   <property name="text">
+    <string>Load project</string>
    </property>
   </action>
  </widget>

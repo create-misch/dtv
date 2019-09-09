@@ -34,7 +34,8 @@ HEADERS  += \
     mainwindow.h \
     treeitem.h \
     treemodel.h \
-    treetextview.h
+    treetextview.h \
+    fileinfomodel.h
 
 # Исходники
 SOURCES += \
@@ -42,8 +43,19 @@ SOURCES += \
     main.cpp \
     treeitem.cpp \
     treemodel.cpp \
-    treetextview.cpp
+    treetextview.cpp \
+    fileinfomodel.cpp
 
 FORMS += \
     mainwindow.ui \
     treetextview.ui
+
+subprojectroot_dir=$$PWD
+TRANSLATIONS += translations/smp-gui_ru.ts
+include(../../translations.pri)
+
+DISTFILES +=
+
+RESOURCES += \
+    smp-gui.qrc
+

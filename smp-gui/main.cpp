@@ -1,5 +1,8 @@
 #include <QApplication>
 
+#include <cmath>
+#include <unistd.h>
+
 #include "mainwindow.h"
 
 int main(int argc, char *argv[])

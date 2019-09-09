@@ -17,6 +17,7 @@ public:
     NodeInterface *parent() const override final;
 
     void addChild(NodeInterface *node) override final;
+    bool deleteChild(NodeInterface *node) override final;
     ChildNodes childs() const override final;
     ChildNodes &childs() override final;
 
