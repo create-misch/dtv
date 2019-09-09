@@ -16,9 +16,10 @@
 #include <log4qt/simplelayout.h>
 #include <log4qt/ttcclayout.h>
 
+#include <configmanager.h>
+
 #include "log4app.h"
 #include "widgetappender.h"
-//#include <configmanager/configmanager.h>
 
 Q_GLOBAL_STATIC(QMutex, gInstanceMutex)
 

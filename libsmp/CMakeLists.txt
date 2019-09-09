@@ -11,7 +11,7 @@ file(GLOB HEADERS "./include/*.h" "./include/*/*.h")
 file(GLOB QRC_FILES "./*.qrc")
 file(GLOB QM_FILES "./translations/*.qm")
 
-add_library(${PROJECT_NAME} ${SRC_LIST} ${HEADERS} ${QRC_FILES} ${QM_FILES})
+add_library(${PROJECT_NAME} ${TYPE_BUILD} ${SRC_LIST} ${HEADERS} ${QRC_FILES} ${QM_FILES})
 
 target_link_libraries(${PROJECT_NAME} Qt5::Core Qt5::Sql Qt5::Gui log4app)
 

@@ -19,9 +19,9 @@ aux_source_directory(${LOG4QT_DIR}/varia SRC_LOG4QT_LIST)
 
 file(GLOB HEADERS "${LOG4QT_DIR}/*.h" "${LOG4QT_DIR}/helpers/*.h" "${LOG4QT_DIR}/spi/*.h" "${LOG4QT_DIR}/varia/*.h")
 
-add_library(${PROJECT_NAME} ${SRC_LIST} ${SRC_LOG4QT_LIST} ${HEADERS})
+add_library(${PROJECT_NAME} ${TYPE_BUILD} ${SRC_LIST} ${SRC_LOG4QT_LIST} ${HEADERS})
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${3RDPARTY_DIR})
 target_include_directories(${PROJECT_NAME} PUBLIC ./)
 
-target_link_libraries(${PROJECT_NAME} Qt5::Core)
+target_link_libraries(${PROJECT_NAME} Qt5::Core  configmanager)
