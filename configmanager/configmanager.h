@@ -40,7 +40,9 @@ public:
     /// \overload
     QByteArray value(const QString &key, const QByteArray& defaultValue = QByteArray());
 
+#ifdef __OSX_UDEPRECATED
     QColor value(const QString &key, const QColor &defaultValue = QColor());
+#endif
     /// \overload
     double value(const QString& key, double defaultValue = 0);
 

@@ -64,10 +64,12 @@ QByteArray ConfigManager::value(const QString &key, const QByteArray &defaultVal
     return d_->findValue(key, defaultValue);
 } // value
 
+#ifdef __OSX_UDEPRECATED
 QColor ConfigManager::value(const QString &key, const QColor &defaultValue)
 {
     return d_->findValue(key, defaultValue);
 } // value
+#endif
 
 double ConfigManager::value(const QString& key, double defaultValue)
 {
