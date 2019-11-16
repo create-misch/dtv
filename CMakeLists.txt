@@ -2,8 +2,7 @@ project (smp)
 
 set(TYPE_BUILD SHARED)
 
-add_subdirectory (log4app)
-add_subdirectory (configmanager)
-add_subdirectory (libsmp)
-add_subdirectory (smp-gui)
+add_subdirectory (3rdparty)
+add_subdirectory (components)
+add_subdirectory (smp_apps)
 
