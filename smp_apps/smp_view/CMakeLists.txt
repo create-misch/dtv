@@ -12,6 +12,7 @@ set(COMMON_DIR ${SRC_DIR}/common)
 set(CONTROLLER_DIR ${SRC_DIR}/controller)
 set(MODEL_DIR ${SRC_DIR}/model)
 set(UI_DIR ${SRC_DIR}/ui)
+set(TREE_DIR ${UI_DIR}/tree)
 set(RESOURCES_DIR ${CMAKE_CURRENT_SOURCE_DIR}/resources)
 set(TRANSLATIONS_DIR ${RESOURCES_DIR}/translations)
 
@@ -49,7 +50,17 @@ list(APPEND SRC_LIST
     ${UI_DIR}/treemodel.h
     ${UI_DIR}/treemodel.cpp
     ${UI_DIR}/treetextview.h
-    ${UI_DIR}/treetextview.cpp)
+    ${UI_DIR}/treetextview.cpp
+    ${TREE_DIR}/tree_node.h
+    ${TREE_DIR}/tree_node.cpp
+    ${TREE_DIR}/itree_display_presenter.h
+    ${TREE_DIR}/itree_display_view.h
+    ${TREE_DIR}/tree_display_presenter.h
+    ${TREE_DIR}/tree_display_presenter.cpp
+    ${TREE_DIR}/tree_display_view.cpp
+    ${TREE_DIR}/tree_display_view.h
+    ${TREE_DIR}/tree_display_item.cpp
+    ${TREE_DIR}/tree_display_item.h)
 
 file(GLOB FORMS ${UI_DIR}/*.ui)
 file(GLOB QRC_FILES ${RESOURCES_DIR}/*.qrc)

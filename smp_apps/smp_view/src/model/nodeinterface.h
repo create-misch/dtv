@@ -6,7 +6,6 @@
 #include <QByteArray>
 #include <QDataStream>
 #include <QList>
-
 #include <common/global.h>
 
 namespace libsmp {
