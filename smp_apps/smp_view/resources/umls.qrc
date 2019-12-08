@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>uml/smp_view_hld.qmodel</file>
+        <file>uml/smp_view_hld.gliffy</file>
+    </qresource>
+</RCC>
