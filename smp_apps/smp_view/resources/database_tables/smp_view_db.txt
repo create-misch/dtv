@@ -1,0 +1,30 @@
+
+Table for Projects View
+Columns		ProjectName
+
+Table for GlobalStorage GlobalID
+Columns		CurrentElementId
+
+Table for Global Storage
+Columns		GlobalId	ProjectName	ElementId	ElementName
+
+Table for TreeView ElementID
+Columns		CurrentElementId
+
+Table for Tree View
+Columns		ElementId(Key)	ElementName	ParentId	ChildsIds
+
+Table for Element View Columns Name
+Columns		Generated
+
+Table for Element View
+Columns		ElementId(Key)	Created from Elements View Columns Name
+
+Table for Files View
+Columns		ElementId(Key)	GlobalIdsFiles
+
+Table For Global StorageFiles
+Columns		FileGlobalId	FileName	FileFormat	FileBlob
+
+Table for TreeView FileGlobalID
+Columns		CurrentFileGlobalId
