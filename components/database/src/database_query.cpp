@@ -87,9 +87,7 @@ bool DatabaseQuery::WriteElement(const QString& tableName, const IDatabaseElemen
     auto database = GetDatabase();
 
     QString queryText =
-        QString{"INSERT INTO %1 (%2) VALUES ("}
-            .arg(tableName)
-            .arg(GetColumnsName(element.GetColumnsDeclarations()));
+        QString{"INSERT INTO %1 (%2) VALUES ("}.arg(tableName).arg(GetColumnsName(element.GetColumnsDeclarations()));
 
     QStringList list;
     for (int i = 0; i < element.GetMaxIndex(); ++i)
@@ -116,22 +114,23 @@ bool DatabaseQuery::LoadElement(const QString& tableName, IDatabaseElement& elem
 
     auto database = GetDatabase();
     auto columnsDeclarations = element.GetColumnsDeclarations();
-    auto queryText = QString{"SELECT %1 FROM %2"}
-            .arg(GetColumnsName(element.GetColumnsDeclarations()))
-            .arg(tableName);
+    auto queryText = QString{"SELECT %1 FROM %2"}.arg(GetColumnsName(element.GetColumnsDeclarations())).arg(tableName);
 
     if (columnsDeclarations.size() > 1)
     {
         auto findColumnName = columnsDeclarations.first().second;
         auto findValue = VariantToDbString(element.GetValue(0));
-        queryText.push_back(QString{"WHERE %1 = %2"}.arg(findColumnName).arg(findValue));
+        queryText.push_back(QString{" WHERE %1 = %2"}.arg(findColumnName).arg(findValue));
     }
     queryText.push_back(";");
 
     QSqlQuery query{database};
 
     auto result = query.exec(queryText);
-
+    if (!result)
+    {
+        PrintSqlError(database.lastError());
+    }
     while (query.next())
     {
         int index{0};
@@ -140,6 +139,33 @@ bool DatabaseQuery::LoadElement(const QString& tableName, IDatabaseElement& elem
             element.SetValue(i, query.value(i));
         }
         ++index;
+    }
+
+    return result;
+}
+
+bool DatabaseQuery::RemoveElement(const QString& tableName, IDatabaseElement& element)
+{
+    assert(element.GetMaxIndex() > 0);
+
+    auto database = GetDatabase();
+    auto columnsDeclarations = element.GetColumnsDeclarations();
+    auto queryText = QString{"DELETE FROM %1"}.arg(tableName);
+
+    if (columnsDeclarations.size() > 1)
+    {
+        auto findColumnName = columnsDeclarations.first().second;
+        auto findValue = VariantToDbString(element.GetValue(0));
+        queryText.push_back(QString{" WHERE %1 = %2"}.arg(findColumnName).arg(findValue));
+    }
+    queryText.push_back(";");
+
+    QSqlQuery query{database};
+
+    auto result = query.exec(queryText);
+    if (!result)
+    {
+        PrintSqlError(database.lastError());
     }
 
     return result;

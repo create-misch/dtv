@@ -117,7 +117,7 @@ TEST_F(DatebaseQueryTest, CreateRemoveIsExistTableForElement)
     ASSERT_FALSE(tables.contains(testTableName));
 }
 
-TEST_F(DatebaseQueryTest, WriteLoadElement)
+TEST_F(DatebaseQueryTest, WriteLoadDeleteElement)
 {
     auto element = database_element_test::FakeMockDatabaseElement{};
 
@@ -141,6 +141,7 @@ TEST_F(DatebaseQueryTest, WriteLoadElement)
     element1.el.elementId = 5;
 
     result = databaseQuery->LoadElement(testTableName, element1);
+    result = databaseQuery->RemoveElement(testTableName, element1);
 
     result = databaseQuery->DeleteTable(testTableName);
     ASSERT_TRUE(result);

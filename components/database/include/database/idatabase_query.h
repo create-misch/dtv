@@ -20,6 +20,7 @@ public:
 
     virtual bool WriteElement(const QString& tableName, const IDatabaseElement& element) = 0;
     virtual bool LoadElement(const QString& tableName, IDatabaseElement& element) = 0;
+    virtual bool RemoveElement(const QString& tableName, IDatabaseElement& element) = 0;
     virtual bool IsExistElement(const QString& tableName, const IDatabaseElement& element) const = 0;
 };
 

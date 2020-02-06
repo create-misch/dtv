@@ -18,6 +18,7 @@ public:
 
     bool WriteElement(const QString& tableName, const IDatabaseElement& element) override;
     bool LoadElement(const QString& tableName, IDatabaseElement& element) override;
+    bool RemoveElement(const QString& tableName, IDatabaseElement& element) override;
     bool IsExistElement(const QString& tableName, const IDatabaseElement& element) const override;
 
 private:
